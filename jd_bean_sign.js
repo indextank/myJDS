@@ -19,6 +19,7 @@ Finish
 出现任何问题请先删除CookieSet.json(云函数不用操作)
 云函数提示写入失败正常,无任何影响
  */
+const $ = new Env('京东多合一签到SCF');
 console.log('京东多合一签到SCF开始')
 const sendNotify = require('./sendNotify.js').sendNotify
 const fs = require('fs')
@@ -90,8 +91,8 @@ console.log('Nobyda签到部分开始')
 更新时间: 2021.09.09 20:20 v2.1.3
 有效接口: 20+
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-电报频道: @NobyDa 
-问题反馈: @NobyDa_bot 
+电报频道: @NobyDa
+问题反馈: @NobyDa_bot
 如果转载: 请注明出处
 
 如需获取京东金融签到Body, 可进入"京东金融"APP (iOS), 在"首页"点击"签到"并签到一次, 返回抓包app搜索关键字 h5/m/appSign 复制请求体填入json串数据内即可
@@ -214,7 +215,7 @@ async function all(cookie, jrBody) {
       // await JDUserSignPre(Wait(stop), 'JDCustomized', '京东商城-定制', '2BJK5RBdvc3hdddZDS1Svd5Esj3R'); //京东定制
       await JDUserSignPre(Wait(stop), 'JDSuitcase', '京东商城-箱包', 'ZrH7gGAcEkY2gH8wXqyAPoQgk6t'); //京东箱包馆
       await JDUserSignPre(Wait(stop), 'JDClothing', '京东商城-服饰', '4RBT3H9jmgYg1k2kBnHF8NAHm7m8'); //京东服饰
-      await JDUserSignPre(Wait(stop), 'JDSchool', '京东商城-校园', '2QUxWHx5BSCNtnBDjtt5gZTq7zdZ'); //京东校园 
+      await JDUserSignPre(Wait(stop), 'JDSchool', '京东商城-校园', '2QUxWHx5BSCNtnBDjtt5gZTq7zdZ'); //京东校园
       await JDUserSignPre(Wait(stop), 'JDHealth', '京东商城-健康', 'w2oeK5yLdHqHvwef7SMMy4PL8LF'); //京东健康
       await JDUserSignPre(Wait(stop), 'JDShoes', '京东商城-鞋靴', '4RXyb1W4Y986LJW8ToqMK14BdTD'); //京东鞋靴
       await JDUserSignPre(Wait(stop), 'JDChild', '京东商城-童装', '3Af6mZNcf5m795T8dtDVfDwWVNhJ'); //京东童装馆
