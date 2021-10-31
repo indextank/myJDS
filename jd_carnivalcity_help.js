@@ -253,28 +253,28 @@ function getAuthorShareCode(url) {
   })
 }
 
-function readShareCode() {
-  return new Promise(async resolve => {
-    $.get({url: `http://transfer.nz.lu/carnivalcity`, 'timeout': 20000}, (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (data) {
-            data = JSON.parse(data);
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
-    await $.wait(20000);
-    resolve()
-  })
-}
+// function readShareCode() {
+//   return new Promise(async resolve => {
+//     $.get({url: `http://transfer.nz.lu/carnivalcity`, 'timeout': 20000}, (err, resp, data) => {
+//       try {
+//         if (err) {
+//           console.log(`${JSON.stringify(err)}`)
+//           console.log(`${$.name} API请求失败，请检查网路重试`)
+//         } else {
+//           if (data) {
+//             data = JSON.parse(data);
+//           }
+//         }
+//       } catch (e) {
+//         $.logErr(e, resp)
+//       } finally {
+//         resolve(data);
+//       }
+//     })
+//     await $.wait(20000);
+//     resolve()
+//   })
+// }
 //格式化助力码
 function shareCodesFormat() {
   return new Promise(async resolve => {

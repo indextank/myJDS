@@ -1645,29 +1645,29 @@ function showMsg() {
   });
 }
 
-function readShareCode() {
-  return new Promise(async resolve => {
-    $.get({url: `http://${randomString(40)}.transfer.nz.lu/cfd`, timeout: 10000}, (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(JSON.stringify(err))
-          console.log(`${$.name} readShareCode API请求失败，请检查网路重试`)
-        } else {
-          if (data) {
-            console.log(`\n随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
-            data = JSON.parse(data);
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
-    await $.wait(10000);
-    resolve()
-  })
-}
+// function readShareCode() {
+//   return new Promise(async resolve => {
+//     $.get({url: `http://${randomString(40)}.transfer.nz.lu/cfd`, timeout: 10000}, (err, resp, data) => {
+//       try {
+//         if (err) {
+//           console.log(JSON.stringify(err))
+//           console.log(`${$.name} readShareCode API请求失败，请检查网路重试`)
+//         } else {
+//           if (data) {
+//             console.log(`\n随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
+//             data = JSON.parse(data);
+//           }
+//         }
+//       } catch (e) {
+//         $.logErr(e, resp)
+//       } finally {
+//         resolve(data);
+//       }
+//     })
+//     await $.wait(10000);
+//     resolve()
+//   })
+// }
 function uploadShareCode(code) {
   return new Promise(async resolve => {
     $.post({url: `http://${randomString(40)}.transfer.nz.lu/upload/cfd?code=${code}&ptpin=${encodeURIComponent(encodeURIComponent($.UserName))}`, timeout: 10000}, (err, resp, data) => {
@@ -1706,12 +1706,12 @@ function uploadShareCode(code) {
 function shareCodesFormat() {
   return new Promise(async resolve => {
     $.newShareCodes = []
-    const readShareCodeRes = await readShareCode();
-    if (readShareCodeRes && readShareCodeRes.code === 200) {
-      $.newShareCodes = [...new Set([...$.shareCodes, ...$.strMyShareIds, ...(readShareCodeRes.data || [])])];
-    } else {
-      $.newShareCodes = [...new Set([...$.shareCodes, ...$.strMyShareIds])];
-    }
+    // const readShareCodeRes = await readShareCode();
+    // if (readShareCodeRes && readShareCodeRes.code === 200) {
+    //   $.newShareCodes = [...new Set([...$.shareCodes, ...$.strMyShareIds, ...(readShareCodeRes.data || [])])];
+    // } else {
+    //   $.newShareCodes = [...new Set([...$.shareCodes, ...$.strMyShareIds])];
+    // }
     console.log(`您将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
