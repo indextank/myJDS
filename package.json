@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "myJDS",
   "version": "1.0.0",
   "description": "{**When you're done, you can delete the content in this README and update the file with details for others getting started with your repository**}",
   "main": "AlipayManor.js",
@@ -26,6 +26,7 @@
     "tough-cookie": "^4.0.0",
     "tunnel": "0.0.6",
     "ws": "^7.5.3",
+    "png-js": "^1.0.0",
     "jsdom": "^17.0.0"
   }
 }
