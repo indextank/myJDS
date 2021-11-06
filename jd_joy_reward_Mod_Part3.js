@@ -49,7 +49,18 @@ Date.prototype.Format = function (fmt) { //author: meizz
 			"open-url": "https://bean.m.jd.com/bean/signIndex.action"
 		});
 	}
-	for (let i = 0; i < cookiesArr.length; i++) {
+	let lnStartAcc=2;
+	let lnTotalAcc=3;
+	
+	if (lnTotalAcc>cookiesArr.length){
+		lnTotalAcc=cookiesArr.length;
+	}
+	if (lnStartAcc>=lnTotalAcc){
+		console.log(`账号太少不需要第3个任务,跳出\n`);
+		return 
+	}
+	console.log(`本次执行第${lnTotalAcc}个账号\n`);
+	for (let i = lnStartAcc ; i < lnTotalAcc; i++) {
 		if (cookiesArr[i]) {
 			cookie = cookiesArr[i];
 			$.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
