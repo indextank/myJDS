@@ -100,7 +100,7 @@ if ($.isNode()) {
             }
             $.delcode = false
             await harmony_collectScore({"appId":appId,"taskToken":$.shareCode[j].code,"actionType":"0","taskId":"6"})
-            await $.wait(2000)
+            await $.wait(3500)
             if ($.delcode) {
               $.shareCode.splice(j, 1)
               j--

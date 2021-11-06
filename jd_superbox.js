@@ -76,7 +76,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                 for (let y = 0; y < $.shareCoseList.length; y++){
                     console.log(`京东账号${$.index} ${$.nickName || $.UserName}去助力${$.shareCoseList[y]}`)
                     await helpShare({"taskId":$.helpId,"linkId":"DQFdr1ttvWWzn0wsQ7JDZQ","encryptPin":$.shareCoseList[y]});
-                    await $.wait(1000);
+                    await $.wait(3500);
                 }
             }
 
