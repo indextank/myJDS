@@ -25,7 +25,7 @@ let useInfo = {};
 let cookiesArr = [], cookie = '', message;
 // euper
 let newShareCodes = [{ "use": "455979050-14287437", "code": "721A6550E5425EAFF8D70FA7206E01272A768DD44168D8BBDDCCAB721B5CE43170BE74B393F6CCC938D7C6B606A5C7CD2BB81D0A33DBA555491BC9A6463209E8608EF0CD6A12A3AED5685D36E6B84A666C955C9238382242768DA0E717C325E5"}];
-let lsjdh = '';
+let lsjdh = 'jdAward3';
 if ($.isNode() && process.env.lsjdh) {
   lsjdh = process.env.lsjdh;
 }

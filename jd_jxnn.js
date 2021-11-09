@@ -69,7 +69,6 @@ let token ='';
   }
   console.log('\n##################开始账号内互助#################\n');
 
-
   for (let i = 0; i < helpnum; i++) {
     $.cookie = cookiesArr[i];
     
@@ -82,8 +81,6 @@ let token ='';
         });
       }
     }
-
-
   }
 
   for (let i = 0; i < cookiesArr.length; i++) {

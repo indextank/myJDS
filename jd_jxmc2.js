@@ -18,12 +18,27 @@ const $ = new Env('惊喜牧场');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 const JXUserAgent =  $.isNode() ? (process.env.JX_USER_AGENT ? process.env.JX_USER_AGENT : ``):``;
-const ByType = $.isNode() ? (process.env.BYTYPE ? process.env.BYTYPE : `888`):`888`;
+const ByType = $.isNode() ? (process.env.BYTYPE ? process.env.BYTYPE : `999`):`999`;
 let cookiesArr = [],token = {},ua = '';
 $.appId = 10028;
 let activeid = 'null';
-$.inviteCodeList = [];
-$.inviteCodeList_rp = [];
+//euper
+$.inviteCodeList = [
+    'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcYa5feB211F0lxsM-jCBBp4HAb9A0dwYzqDUmof9mItWg', 
+    'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcbNaushqRpgAFdwgS-9IS0oEZ0fddcUGMf6a4nn1Krv2g',
+    'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcaFP8zbvtfofPEYuV_7YZHV5X7Ehv0T52F0WHPzsE2ZNg',
+    'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcaDAmLf44f-DR_fDmDbCoSEGzWijvO9BCOAVwJegfnv7w',
+    'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcYmY-80xIb2NhgEWZJtr0p8q9kp_8yKkQzwLSP0oa9z3w',
+    'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcZj15ZwHhNQwIUsXB5x2gvlVdnHnSo1BFgNQJ45ck7Mew'
+];
+$.inviteCodeList_rp = [
+    'g_eiitD1h9-a-PX-GytKiCP4Y59In6jxprR7viqVfh8F3m5HUcmmxm3K0C4WqVwNAY6jHlwG_4dQXpjN_XQrpIDr_MYYbRnjJXPDsKY1Ula7iNRHgo8vo-BKwpp8-XoD',
+    'g_eiitD1h9-a-PX-GytKiCP4Y59In6jxprR7viqVfh8F3m5HUcmmxm3K0C4WqVwNXB9BInfmTRBCpxH3DoLviX3c8CdEcOeSLM2Aw3iI2JsT0pprGCZUYhrbGiIm-G0i',
+    'g_eiitD1h9-a-PX-GytKiCP4Y59In6jxprR7viqVfh8F3m5HUcmmxm3K0C4WqVwNUAsy7cqYbZQO7K7CaJsXIOX5nqzEPPhkiuGBg_2KHtY',
+    'g_eiitD1h9-a-PX-GytKiCP4Y59In6jxprR7viqVfh8F3m5HUcmmxm3K0C4WqVwNx4-O7ckbFmEr2IqjnXfE2Gd0vA9tB2lU9O6iPI-4EDzwIsiCJqOnqtHW5LhjvxZ1',
+    'g_eiitD1h9-a-PX-GytKiCP4Y59In6jxprR7viqVfh8F3m5HUcmmxm3K0C4WqVwN8lwr2of6mJCi1IiLVkOh8cE2iGjCdzQuSyweplB1A43KmWvRnfauOsv3ZvHScXZo',
+    'g_eiitD1h9-a-PX-GytKiCP4Y59In6jxprR7viqVfh8F3m5HUcmmxm3K0C4WqVwNxYmQCzmFkgK7SJgjQTF2GcFK_lJPqQqQzSNFOPeH2NE'
+];
 let flag_hb = true
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
