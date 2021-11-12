@@ -32,7 +32,7 @@ const randomCount = $.isNode() ? 5 : 5;
 let cash_exchange = false;//是否消耗2元红包兑换200京豆，默认否
 // euper
 const inviteCodes = [
-  `Jx4yZeu7Zvkm7G_RyXsU0ot2@eU9YDr73A7tOiRyrlQlx@f0ZmMuS1@eU9YLrf7Oop3hBeOjQFv@eU9Ya726Yqhz827Qz3BGhA@`,
+  `Jx4yZeu7Zvkm7G_RyXsU0ot2@eU9YDr73A7tOiRyrlQlx@eU9YOpHQMJR1ixaPqQx3@eU9Yabq2MvlyojjTmHUb0A@f0ZmMuS1@eU9YLrf7Oop3hBeOjQFv@eU9Ya726Yqhz827Qz3BGhA`,
 ]
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -314,7 +314,7 @@ async function appdoTask(type,taskInfo) {
               console.log(`任务完成成功`)
               // console.log(data.data.result.taskInfos)
             }else{
-              console.log(data)
+              console.log(JSON.stringify(data))
             }
           }
         }
