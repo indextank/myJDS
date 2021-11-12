@@ -352,7 +352,7 @@ def getShareCode(ck):
 
 def helpCode(ck, groupCode, shareCode,u, unum, user, activityId):
     try:
-        v_num1 = ''.join(random.sample(["1", "2", "3", "4", "5", "6", "7", "8", "9"], 1)) + ''.join(random.sample(string.digits, 4))
+        v_num1 = ''.join(random.sample(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"], 1)) + ''.join(random.sample(string.digits, 4))
         headers = {
             'Cookie': ck,
             'Accept': '*/*',
