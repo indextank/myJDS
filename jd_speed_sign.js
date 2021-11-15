@@ -1,5 +1,5 @@
 /*
-0 7 * * * jd_speed_sign.js
+40 23 * * * jd_speed_sign.js
 京东极速版签到+赚现金任务
 每日9毛左右，满3，10，50可兑换无门槛红包
 ⚠️⚠️⚠️一个号需要运行40分钟左右
@@ -11,17 +11,17 @@
 ============Quantumultx===============
 [task_local]
 #京东极速版
-0 7 * * * jd_speed_sign.js, tag=京东极速版, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true
+40 23 * * * jd_speed_sign.js, tag=京东极速版, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "0 7 * * *" script-path=jd_speed_sign.js,tag=京东极速版
+cron "40 23 * * *" script-path=jd_speed_sign.js,tag=京东极速版
 
 ===============Surge=================
-京东极速版 = type=cron,cronexp="0 7 * * *",wake-system=1,timeout=33600,script-path=jd_speed_sign.js
+京东极速版 = type=cron,cronexp="40 23 * * *",wake-system=1,timeout=33600,script-path=jd_speed_sign.js
 
 ============小火箭=========
-京东极速版 = type=cron,script-path=jd_speed_sign.js, cronexpr="0 7 * * *", timeout=33600, enable=true
+京东极速版 = type=cron,script-path=jd_speed_sign.js, cronexpr="40 23 * * *", timeout=33600, enable=true
 */
 
 const $ = new Env('京东极速版');
@@ -49,7 +49,7 @@ let llAPIError = false
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
   }
-  $.canhelp = true;
+  $.canhelp = false;
   if ($.isNode()) {
     if (process.env.HELP_YQYL && process.env.HELP_YQYL === 'false')
       $.canhelp = false
@@ -92,11 +92,11 @@ async function jdGlobal() {
     await wheelsHome()
     await apTaskList()
     await wheelsHome()
-    if ($.canhelp) {
-      console.log(`\n京东账号${$.index}开始助力【zero205】邀请有礼，感谢！\n`);
-      await invite()
-      await invite2()
-    }
+    // if ($.canhelp) {
+    //   console.log(`\n京东账号${$.index}开始助力【zero205】邀请有礼，感谢！\n`);
+    //   await invite()
+    //   await invite2()
+    // }
     $.score = 0
     $.total = 0
     await taskList()
@@ -795,22 +795,22 @@ function taskGetUrl(function_id, body) {
   }
 }
 
-function invite2() {
-  let t = +new Date()
-  let inviterId = [
-    "/eNHdfn6fP+TFwVda3ipjWwvTFqeKBZaRG38adWABKk=",
-    "Sev6JWjut6GyaEHJIWpSQQ=="
-  ][Math.floor((Math.random() * 2))]
-  let headers = {
-    'Host': 'api.m.jd.com',
-    'accept': 'application/json, text/plain, */*',
-    'content-type': 'application/x-www-form-urlencoded',
-    'origin': 'https://assignment.jd.com',
-    'accept-language': 'zh-cn',
-    'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-    'referer': `https://assignment.jd.com/?inviterId=${encodeURIComponent(inviterId)}`,
-    'Cookie': cookie
-  }
+// function invite2() {
+//   let t = +new Date()
+//   let inviterId = [
+//     "/eNHdfn6fP+TFwVda3ipjWwvTFqeKBZaRG38adWABKk=",
+//     "Sev6JWjut6GyaEHJIWpSQQ=="
+//   ][Math.floor((Math.random() * 2))]
+//   let headers = {
+//     'Host': 'api.m.jd.com',
+//     'accept': 'application/json, text/plain, */*',
+//     'content-type': 'application/x-www-form-urlencoded',
+//     'origin': 'https://assignment.jd.com',
+//     'accept-language': 'zh-cn',
+//     'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+//     'referer': `https://assignment.jd.com/?inviterId=${encodeURIComponent(inviterId)}`,
+//     'Cookie': cookie
+//   }
 
   let dataString = `functionId=TaskInviteService&body={"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":"${encodeURIComponent(inviterId)}","type":1}}&appid=market-task-h5&uuid=&_t=${t}`;
 
@@ -824,26 +824,26 @@ function invite2() {
   })
 }
 
-function invite() {
-  let t = +new Date()
-  let inviterId = [
-    "/eNHdfn6fP+TFwVda3ipjWwvTFqeKBZaRG38adWABKk=",
-    "R+eeS9UrTadw7yIF7ubkxBOARQK0BNXiQLVF0TyAf4Q=",
-    "4OAzIinjvoFYHDImve1/VA==",
-    "N0xw0OCPJTUt8xzWZPWs3w==",
-    "z///voP4pDo+KI13j5As9g==",
-    "Sev6JWjut6GyaEHJIWpSQQ=="
-  ][Math.floor((Math.random() * 6))]
-  var headers = {
-    'Host': 'api.m.jd.com',
-    'accept': 'application/json, text/plain, */*',
-    'content-type': 'application/x-www-form-urlencoded',
-    'origin': 'https://invite-reward.jd.com',
-    'accept-language': 'zh-cn',
-    'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-    'referer': 'https://invite-reward.jd.com/',
-    'Cookie': cookie
-  };
+// function invite() {
+//   let t = +new Date()
+//   let inviterId = [
+//     "/eNHdfn6fP+TFwVda3ipjWwvTFqeKBZaRG38adWABKk=",
+//     "R+eeS9UrTadw7yIF7ubkxBOARQK0BNXiQLVF0TyAf4Q=",
+//     "4OAzIinjvoFYHDImve1/VA==",
+//     "N0xw0OCPJTUt8xzWZPWs3w==",
+//     "z///voP4pDo+KI13j5As9g==",
+//     "Sev6JWjut6GyaEHJIWpSQQ=="
+//   ][Math.floor((Math.random() * 6))]
+//   var headers = {
+//     'Host': 'api.m.jd.com',
+//     'accept': 'application/json, text/plain, */*',
+//     'content-type': 'application/x-www-form-urlencoded',
+//     'origin': 'https://invite-reward.jd.com',
+//     'accept-language': 'zh-cn',
+//     'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+//     'referer': 'https://invite-reward.jd.com/',
+//     'Cookie': cookie
+//   };
 
   var dataString = `functionId=InviteFriendChangeAssertsService&body={"method":"attendInviteActivity","data":{"inviterPin":"${encodeURIComponent(inviterId)}","channel":1,"token":"","frontendInitStatus":""}}&referer=-1&eid=eidIf3dd8121b7sdmiBLGdxRR46OlWyh62kFAZogTJFnYqqRkwgr63%2BdGmMlcv7EQJ5v0HBic81xHXzXLwKM6fh3i963zIa7Ym2v5ehnwo2B7uDN92Q0&aid=&client=ios&clientVersion=14.4&networkType=wifi&fp=-1&appid=market-task-h5&_t=${t}`;
   var options = {
