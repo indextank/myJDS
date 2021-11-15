@@ -696,8 +696,8 @@ function receiveJd2() {
             if (data['code'] === '0' && data['data']) {
               console.log(`强制开启新版领京豆成功,获得${data['data']['sceneLevelConfig']['beanNum']}京豆\n`);
               $.msg($.name, '', `强制开启新版领京豆成功\n获得${data['data']['sceneLevelConfig']['beanNum']}京豆`);
-            } else {
-              console.log(`强制开启新版领京豆结果:${JSON.stringify(data)}\n`)
+            // } else {
+            //   console.log(`强制开启新版领京豆结果:${JSON.stringify(data)}\n`)
             }
           }
         }

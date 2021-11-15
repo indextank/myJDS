@@ -151,8 +151,9 @@ message = ""
             }
           }
         } else if (task.taskType === 'SHARE_INVITE') {
+          $.yq_taskid = task.id
           for (let j = 0; j < 5; j++) {
-            let resp = await apTaskDrawAward(261, 'SHARE_INVITE');
+            let resp = await apTaskDrawAward($.yq_taskid, 'SHARE_INVITE');
 
             if (!resp.success) {
               break
@@ -166,9 +167,9 @@ message = ""
           $.log(`${task.taskTitle}|${task.taskShowTitle} 领取奖励`)
           await apTaskDrawAward(task.id, task.taskType);
         }
-        if (task.taskType === 'SHARE_INVITE') {
-          $.yq_taskid = task.id
-        }
+        // if (task.taskType === 'SHARE_INVITE') {
+        //   $.yq_taskid = task.id
+        // }
       }
     }
   }
