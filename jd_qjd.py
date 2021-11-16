@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*
 #全民抢京豆
 '''
+cron: 10 0 7-12 11 *
+new Env('全民抢京豆');
+
 项目名称: JD-Script / jd_qjd
 Author: Curtin
 功能：全民抢京豆（10.29-11.12）：https://h5.m.jd.com/rn/3MQXMdRUTeat9xqBSZDSCCAE9Eqz/index.html?has_native=0
