@@ -133,19 +133,16 @@ async function jdPlantBean() {
 
       // ***************************
       // 报告运行次数
-      // if (ZLC) {
-      // $.get({
-      //     url: `https://api.jdsharecode.xyz/api/runTimes?activityId=bean&sharecode=${$.myPlantUuid}`
-      //   }, (err, resp, data) => {
-      //     if (err) {
-      //       console.log('上报失败', err)
-      //     } else {
-      //       if (data === '1' || data === '0') {
-      //         console.log('上报成功')
-      //       }
-      //     }
-      //   })
-      // }
+      if (ZLC) {
+        for (let k = 0; k < 5; k++) {
+          try {
+            await runTimes()
+            break
+          } catch (e) {
+          }
+          await $.wait(Math.floor(Math.random() * 10 + 3) * 1000)
+        }
+      }
       // ***************************
 
       roundList = $.plantBeanIndexResult.data.roundList;
@@ -173,6 +170,21 @@ async function jdPlantBean() {
     // if ($.isNode()) await notify.sendNotify(`${$.name}`, errMsg);
     $.msg($.name, '', `${errMsg}`)
   }
+}
+function runTimes(){
+  return new Promise((resolve, reject) => {
+    $.get({
+        url: `https://api.jdsharecode.xyz/api/runTimes?activityId=bean&sharecode=${$.myPlantUuid}`
+      }, (err, resp, data) => {
+        if (err) {
+        console.log('上报失败', err)
+        reject(err)
+      } else {
+        console.log(data)
+        resolve()
+      }
+    })
+  })
 }
 async function doGetReward() {
   console.log(`【上轮京豆】${awardState === '4' ? '采摘中' : awardState === '5' ? '可收获了' : '已领取'}`);
@@ -441,12 +453,12 @@ function showTaskProcess() {
 }
 //助力好友
 async function doHelp() {
-  // if ($.isNode() && !process.env.PLANT_BEAN_SHARECODES) {
-  //   console.log(`您未填写助力码变量，开始账号内互助，再帮【zero205】助力`);
-  //   $.newShareCode = [...(jdPlantBeanShareArr || []), ...(newShareCodes || [])]
-  // } else {
+  if ($.isNode() && !process.env.PLANT_BEAN_SHARECODES) {
+    console.log(`您未填写助力码变量，开始账号内互助，再帮【zero205】助力`);
+    $.newShareCode = [...(jdPlantBeanShareArr || []), ...(newShareCodes || [])]
+  } else {
     $.newShareCode = newShareCodes
-  // }
+  }
   for (let plantUuid of $.newShareCode) {
     console.log(`${$.UserName}开始助力: ${plantUuid}`);
     if (!plantUuid) continue;

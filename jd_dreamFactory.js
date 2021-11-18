@@ -44,9 +44,11 @@ const randomCount = $.isNode() ? 20 : 5;
 let tuanActiveId = ``, hasSend = false;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '', jdDreamFactoryShareArr = [], newShareCodes;
-// euper
 const inviteCodes = [
-  'dS_CQSaOBndRRB5UQ9DsolgaRjsyf1XgAC0mW-mK938=@vcoKyxy3ZR--_lTqdoFtSw==@0vdPdVKsaqfyq87GKvM3gg==@nw5UBvpTilQFdZAxANxjuQ==@pJjYgZSb_6_YOZVw6neYig=='
+  'V5LkjP4WRyjeCKR9VRwcRX0bBuTz7MEK0-E99EJ7u0k=@0WtCMPNq7jekehT6d3AbFw==@6lw84c1ARwpoRyOtfnF77g==@J1t777njetfQcyEg57lzQA==@W9u_eBl3YKbSjXu0QP3HGQ=@VV55A_oKz5u5CYrL3jxPdg==@9TCPf6sW9_v3B9f3KUoa7Q==',
+  "gB99tYLjvPcEFloDgamoBw==@7dluIKQMp0bySgcr8AqFgw==@6lw84c1ARwpoRyOtfnF77g==@J1t777njetfQcyEg57lzQA==@W9u_eBl3YKbSjXu0QP3HGQ=@VV55A_oKz5u5CYrL3jxPdg==@9TCPf6sW9_v3B9f3KUoa7Q==",
+  '-OvElMzqeyeGBWazWYjI1Q==@6lw84c1ARwpoRyOtfnF77g==@J1t777njetfQcyEg57lzQA==@W9u_eBl3YKbSjXu0QP3HGQ=@VV55A_oKz5u5CYrL3jxPdg==@9TCPf6sW9_v3B9f3KUoa7Q==',
+  'GFwo6PntxDHH95ZRzZ5uAg==@6lw84c1ARwpoRyOtfnF77g==@J1t777njetfQcyEg57lzQA==@W9u_eBl3YKbSjXu0QP3HGQ=@VV55A_oKz5u5CYrL3jxPdg==@9TCPf6sW9_v3B9f3KUoa7Q=='
 ];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const ZLC = !(process.env.JD_JOIN_ZLC && process.env.JD_JOIN_ZLC === 'false')
@@ -657,6 +659,19 @@ function userInfo() {
                 $.productionId = production.productionId;//商品ID
                 $.commodityDimId = production.commodityDimId;
                 $.encryptPin = data.user.encryptPin;
+                // ***************************
+                // 报告运行次数
+                if (ZLC) {
+                  for (let k = 0; k < 5; k++) {
+                    try {
+                      await runTimes()
+                      break
+                    } catch (e) {
+                    }
+                    await $.wait(Math.floor(Math.random() * 10 + 3) * 1000)
+                  }
+                }
+                // ***************************
                 // subTitle = data.user.pin;
                 await GetCommodityDetails();//获取已选购的商品信息
                 if (productionStage['productionStageAwardStatus'] === 1) {
@@ -676,24 +691,6 @@ function userInfo() {
                 message += `【生产商品】${$.productName}\n`;
                 message += `【当前等级】${data.user.userIdentity} ${data.user.currentLevel}\n`;
                 message += `【生产进度】${((production.investedElectric / production.needElectric) * 100).toFixed(2)}%\n`;
-
-                // ***************************
-                // 报告运行次数
-                // if (ZLC) {
-                //   $.get({
-                //     url: `https://api.jdsharecode.xyz/api/runTimes?activityId=jxfactory&sharecode=${data.user.encryptPin}`
-                //   }, (err, resp, data) => {
-                //     if (err) {
-                //       console.log('上报失败', err)
-                //     } else {
-                //       if (data === '1' || data === '0') {
-                //         console.log('上报成功')
-                //       }
-                //     }
-                //   })
-                // }
-                // ***************************
-
                 if (production.investedElectric >= production.needElectric) {
                   if (production['exchangeStatus'] === 1) $.log(`\n\n可以兑换商品了`)
                   if (production['exchangeStatus'] === 3) {
@@ -737,6 +734,21 @@ function userInfo() {
         $.logErr(e, resp)
       } finally {
         resolve();
+      }
+    })
+  })
+}
+function runTimes() {
+  return new Promise((resolve, reject) => {
+    $.get({
+      url: `https://api.jdsharecode.xyz/api/runTimes?activityId=jxfactory&sharecode=${$.encryptPin}`
+    }, (err, resp, data) => {
+      if (err) {
+        console.log('上报失败', err)
+        reject(err)
+      } else {
+        console.log(data)
+        resolve()
       }
     })
   })
@@ -1070,6 +1082,7 @@ async function joinLeaderTuan() {
     for (let tuanId of $.authorTuanIds) {
       if (!tuanId) continue
       if (!$.canHelp) break;
+      console.log(`\n账号${$.UserName} 参加zero205的团 【${tuanId}】`);
       await JoinTuan(tuanId);
       await $.wait(1000);
     }

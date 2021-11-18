@@ -32,18 +32,18 @@ let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, new
 //此此内容是IOS用户下载脚本到本地使用，填写互助码的地方，同一京东账号的好友互助码请使用@符号隔开。
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
-   //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=',
-  'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU='
+  //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
+ 'MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDUwMTI0MDAwMDAwMDM4NDQ3MzAx',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=',
+ 'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU='
 ]
 const ZLC = !(process.env.JD_JOIN_ZLC && process.env.JD_JOIN_ZLC === 'false')
 let message = '', subTitle = '', option = {};
@@ -148,19 +148,16 @@ async function jdPet() {
 
       // ***************************
       // 报告运行次数
-      // if (ZLC) {
-      //   $.get({
-      //     url: `https://api.jdsharecode.xyz/api/runTimes?activityId=pet&sharecode=${$.petInfo.shareCode}`
-      //   }, (err, resp, data) => {
-      //     if (err) {
-      //       console.log('上报失败', err)
-      //     } else {
-      //       if (data === '1' || data === '0') {
-      //         console.log('上报成功')
-      //       }
-      //     }
-      //   })
-      // }
+      if (ZLC) {
+        for (let k = 0; k < 5; k++) {
+          try {
+            await runTimes()
+            break
+          } catch (e) {
+          }
+          await $.wait(Math.floor(Math.random() * 10 + 3) * 1000)
+        }
+      }
       // ***************************
 
       await taskInit();
@@ -192,6 +189,21 @@ async function jdPet() {
     // if ($.isNode()) await notify.sendNotify(`${$.name}`, errMsg);
     // $.msg($.name, '', `${errMsg}`)
   }
+}
+function runTimes(){
+  return new Promise((resolve, reject) => {
+    $.get({
+        url: `https://api.jdsharecode.xyz/api/runTimes?activityId=pet&sharecode=${$.petInfo.shareCode}`
+      }, (err, resp, data) => {
+        if (err) {
+        console.log('上报失败', err)
+        reject(err)
+      } else {
+        console.log(data)
+        resolve()
+      }
+    })
+  })
 }
 // 收取所有好感度
 async function energyCollect() {
@@ -327,7 +339,7 @@ async function slaveHelp() {
   //return
   let helpPeoples = '';
   if ($.isNode() && !process.env.PETSHARECODES) {
-    console.log(`您未填写助力码变量，开始账号内互助`);
+    console.log(`您未填写助力码变量，开始账号内互助，再帮【zero205】助力`);
     $.newShareCode = [...(jdPetShareArr || []), ...(newShareCodes || [])]
   } else {
     $.newShareCode = newShareCodes

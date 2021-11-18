@@ -71,7 +71,7 @@ if ($.isNode()) {
         console.log('\n脚本早上9点到10点直接执行，才会执行账号内互助');
         return ;
     }
-    if (flag_hb) {
+    if (process.env.JXMC_RP != 'false' && flag_hb) {
         console.log('\n##################开始账号内互助(红包)#################\n');
         await getShareCode('jxmc_hb.json')
         $.inviteCodeList_rp = [...($.inviteCodeList_rp || []), ...($.shareCode || [])]
@@ -220,7 +220,7 @@ async function main() {
     console.log(`获取获得详情成功,总共有小鸡：${petidList.length}只,鸡蛋:${homePageInfo.eggcnt}个,金币:${homePageInfo.coins},互助码：${homePageInfo.sharekey}`);
     //购买小鸡
     await buyChick(configInfo,homePageInfo,cardInfo);
- 
+
     if(!petidList || petidList.length === 0){
         console.log(`账号内没有小鸡，暂停执行`);
         return ;
