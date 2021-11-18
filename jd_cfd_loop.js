@@ -164,13 +164,15 @@ async function queryshell() {
         } else {
           data = JSON.parse(data.replace(/\n/g, "").match(new RegExp(/jsonpCBK.?\((.*);*\)/))[1]);
           $.canpick = true;
-          for (let key of Object.keys(data.Data.NormShell)) {
-            let vo = data.Data.NormShell[key]
-            for (let j = 0; j < vo.dwNum && $.canpick; j++) {
-              await pickshell(`dwType=${vo.dwType}`)
-              await $.wait(3000)
+          if (data.Data.NormShell) {
+            for (let key of Object.keys(data.Data.NormShell)) {
+              let vo = data.Data.NormShell[key]
+              for (let j = 0; j < vo.dwNum && $.canpick; j++) {
+                await pickshell(`dwType=${vo.dwType}`)
+                await $.wait(3000)
+              }
+              if (!$.canpick) break
             }
-            if (!$.canpick) break
           }
           console.log('')
         }
