@@ -101,14 +101,15 @@ if ($.isNode() && process.env.BEANCHANGE_USERGP4) {
 if ($.isNode() && process.env.BEANCHANGE_DISABLECASH) {
 	DisableCash = process.env.BEANCHANGE_DISABLECASH;
 }
-if ($.isNode() && process.env.BEANCHANGE_ENABLEMONTH) {
-	EnableMonth = process.env.BEANCHANGE_ENABLEMONTH;
-}
+//取消月结查询
+//if ($.isNode() && process.env.BEANCHANGE_ENABLEMONTH) {
+	//EnableMonth = process.env.BEANCHANGE_ENABLEMONTH;
+//}
 if ($.isNode() && process.env.BEANCHANGE_ALLNOTIFY) {
-
+	
 	var strTempNotify=process.env.BEANCHANGE_ALLNOTIFY ? process.env.BEANCHANGE_ALLNOTIFY.split('&') : [];
 	if (strTempNotify.length > 0) {
-		for (var TempNotifyl in strTempNotify) {
+		for (var TempNotifyl in strTempNotify) {					
 			strAllNotify+=strTempNotify[TempNotifyl]+'\n';
 		}
 	}
@@ -302,7 +303,7 @@ if ($.isNode()) {
 			if ($.isNode() && allMessage) {
 				if(strAllNotify)
 					allMessage=strAllNotify+`\n`+allMessage;
-
+				
 				await notify.sendNotify(`${$.name}`, `${allMessage}`, {
 					url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`
 				})
@@ -342,7 +343,7 @@ if ($.isNode()) {
 		if ($.isNode() && allMessage) {
 			if(strAllNotify)
 				allMessage=strAllNotify+`\n`+allMessage;
-
+			
 			await notify.sendNotify(`${$.name}`, `${allMessage}`, {
 				url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`
 			})
@@ -416,7 +417,7 @@ async function showMsg() {
 	//return
 	ReturnMessageTitle="";
 	ReturnMessage = "";
-
+	
 	if (MessageUserGp2) {
 		userIndex2 = MessageUserGp2.findIndex((item) => item === $.pt_pin);
 	}
@@ -426,7 +427,7 @@ async function showMsg() {
 	if (MessageUserGp4) {
 		userIndex4 = MessageUserGp4.findIndex((item) => item === $.pt_pin);
 	}
-
+	
 	if (userIndex2 != -1) {
 		IndexGp2 += 1;
 		ReturnMessageTitle = `【账号${IndexGp2}🆔】${$.nickName || $.UserName}\n`;
@@ -657,7 +658,7 @@ async function showMsg() {
 		TempBaipiao += `【京喜工厂】${$.jxFactoryReceive} 可以兑换了!\n`;
 
 	}
-
+	
 	llPetError=false;
 	const response = await PetRequest('energyCollect');
 	const initPetTownRes = await PetRequest('initPetTown');
@@ -744,7 +745,7 @@ async function showMsg() {
 		ReturnMessage += RemainMessage;
 		if(strAllNotify)
 			ReturnMessage=strAllNotify+`\n`+ReturnMessage;
-
+		
 		await notify.sendNotifybyWxPucher(`${$.name}`, `${ReturnMessage}`, `${$.UserName}`);
 	}
 
@@ -899,14 +900,14 @@ async function jdCash() {
 	isSignError = false;
 	let sign = await getSign(functionId, decodeURIComponent(body), uuid)
 		if (isSignError) {
-			console.log(`领现金任务签名获取失败,等待3秒后再次尝试...`)
-			await $.wait(3 * 1000);
+			console.log(`领现金任务签名获取失败,等待2秒后再次尝试...`)
+			await $.wait(2 * 1000);
 			isSignError = false;
 			sign = await getSign(functionId, decodeURIComponent(body), uuid);
 		}
 		if (isSignError) {
-			console.log(`领现金任务签名获取失败,等待3秒后再次尝试...`)
-			await $.wait(3 * 1000);
+			console.log(`领现金任务签名获取失败,等待2秒后再次尝试...`)
+			await $.wait(2 * 1000);
 			isSignError = false;
 			sign = await getSign(functionId, decodeURIComponent(body), uuid);
 		}
@@ -1058,12 +1059,12 @@ function TotalBean2() {
 				if (err) {
 					$.logErr(err);
 				} else {
-					if (data) {
-						data = JSON.parse(data);
+					if (data) {						
+						data = JSON.parse(data);						
 						if (!data.user) {
 							return;
 						}
-						const userInfo = data.user;
+						const userInfo = data.user;						
 						if (userInfo) {
 							if (!$.nickName)
 								$.nickName = userInfo.petName;
@@ -1300,7 +1301,7 @@ function getJdZZ() {
 					console.log(`京东赚赚API请求失败，请检查网路重试`);
 				} else {
 					if (safeGet(data)) {
-						data = JSON.parse(data);
+						data = JSON.parse(data);						
 						$.JdzzNum = data.data.totalNum;
 					}
 				}

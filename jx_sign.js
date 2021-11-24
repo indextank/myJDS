@@ -77,6 +77,7 @@ if ($.isNode()) {
       await $.wait(500)
     }
   }
+
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
