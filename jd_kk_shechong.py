@@ -485,13 +485,13 @@ def start():
         #     print("\t😆您的抽奖次数不足!")
         for i in range(2):
             startDraw(header, actorUuid, pin, user, i)
-        #if a == 1:
-            #print(f"用户{a}[{nickname}]>助力>>[Author]{shareUuid}")
-            #shareuserid4minipg = pin
-            #shareUuid = actorUuid
-            #Masternickname = nickname
-            #a += 1
-            #continue
+        if a == 1:
+            print(f"用户{a}[{nickname}]>助力>>[Author]{shareUuid}")
+            shareuserid4minipg = pin
+            shareUuid = actorUuid
+            Masternickname = nickname
+            a += 1
+            continue
         print(f"用户{a}[{nickname}]>>助力>>>[{Masternickname}]{shareUuid}")
         sleep(1)
         a += 1
