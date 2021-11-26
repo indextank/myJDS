@@ -812,17 +812,17 @@ function taskGetUrl(function_id, body) {
 //     'Cookie': cookie
 //   }
 
-  let dataString = `functionId=TaskInviteService&body={"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":"${encodeURIComponent(inviterId)}","type":1}}&appid=market-task-h5&uuid=&_t=${t}`;
+//   let dataString = `functionId=TaskInviteService&body={"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":"${encodeURIComponent(inviterId)}","type":1}}&appid=market-task-h5&uuid=&_t=${t}`;
 
-  var options = {
-    url: 'https://api.m.jd.com/',
-    headers: headers,
-    body: dataString
-  }
-  $.post(options, (err, resp, data) => {
-    // console.log(data)
-  })
-}
+//   var options = {
+//     url: 'https://api.m.jd.com/',
+//     headers: headers,
+//     body: dataString
+//   }
+//   $.post(options, (err, resp, data) => {
+//     // console.log(data)
+//   })
+// }
 
 // function invite() {
 //   let t = +new Date()
@@ -845,16 +845,16 @@ function taskGetUrl(function_id, body) {
 //     'Cookie': cookie
 //   };
 
-  var dataString = `functionId=InviteFriendChangeAssertsService&body={"method":"attendInviteActivity","data":{"inviterPin":"${encodeURIComponent(inviterId)}","channel":1,"token":"","frontendInitStatus":""}}&referer=-1&eid=eidIf3dd8121b7sdmiBLGdxRR46OlWyh62kFAZogTJFnYqqRkwgr63%2BdGmMlcv7EQJ5v0HBic81xHXzXLwKM6fh3i963zIa7Ym2v5ehnwo2B7uDN92Q0&aid=&client=ios&clientVersion=14.4&networkType=wifi&fp=-1&appid=market-task-h5&_t=${t}`;
-  var options = {
-    url: `https://api.m.jd.com/?t=${+new Date()}`,
-    headers: headers,
-    body: dataString
-  };
-  $.post(options, (err, resp, data) => {
-    // console.log(data)
-  })
-}
+//   var dataString = `functionId=InviteFriendChangeAssertsService&body={"method":"attendInviteActivity","data":{"inviterPin":"${encodeURIComponent(inviterId)}","channel":1,"token":"","frontendInitStatus":""}}&referer=-1&eid=eidIf3dd8121b7sdmiBLGdxRR46OlWyh62kFAZogTJFnYqqRkwgr63%2BdGmMlcv7EQJ5v0HBic81xHXzXLwKM6fh3i963zIa7Ym2v5ehnwo2B7uDN92Q0&aid=&client=ios&clientVersion=14.4&networkType=wifi&fp=-1&appid=market-task-h5&_t=${t}`;
+//   var options = {
+//     url: `https://api.m.jd.com/?t=${+new Date()}`,
+//     headers: headers,
+//     body: dataString
+//   };
+//   $.post(options, (err, resp, data) => {
+//     // console.log(data)
+//   })
+// }
 
 function TotalBean() {
   return new Promise(async resolve => {
