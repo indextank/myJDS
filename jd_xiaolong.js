@@ -20,7 +20,8 @@ let hotList = [];
         return;
     }
     $.shareUuid = '';
-    let shareList = [];
+    //euper
+    let shareList = ["2e0f7ef54b004d55bc669f159214a9e9", "9298dd0dee9446f79145fd7bbdb57db7", "9103357bd7c24ffa960362e3d6980aa1", "19178dc1d1244d4280177e8480618211", "eda0dcb69b7143c28fcb49456fb5cb10", "a67fdf21c211419b92d99aa0d3b88d57"];
     if(shareList.length > 0){
         $.shareUuid = getRandomArrayElements(shareList,1)[0];
     }

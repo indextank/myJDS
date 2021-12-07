@@ -65,7 +65,7 @@ $.shareCodes = [];
       await jdSplit()
     }
   }
-  let res = res2 = []
+  
 
   let res = await getAuthorShareCode('https://raw.githubusercontent.com/indextank/myJDS/master/shareCodes/split.json')
   // if (!res) {
@@ -73,6 +73,7 @@ $.shareCodes = [];
   //   await $.wait(1000)
   //   res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/split.json')
   // }
+  let res2 = []
   // let res2 = await getAuthorShareCode('https://raw.githubusercontent.com/zero205/updateTeam/main/shareCodes/split.json')
   // if (!res2) {
   //   res2 = await getAuthorShareCode('ttps://raw.fastgit.org/zero205/updateTeam/main/shareCodes/split.json')
