@@ -2,7 +2,7 @@
 /*
 ENV
 
-JOY_COIN_MAXIMIZE =      最大化硬币收益，如果合成后全部挖土后还有空位，则开启此模式（默认关闭） 0关闭 1开启
+JOY_COIN_MAXIMIZE =      最大化硬币收益，如果合成后全部挖土后还有空位，则开启此模式（默认开启） 0关闭 1开启
 
 请确保新用户助力过开工位，否则开启游戏了就不算新用户，后面就不能助力开工位了！！！！！！！！！！
 
@@ -43,7 +43,7 @@ if ($.isNode()) {
 
 //最大化硬币收益模式
 $.JOY_COIN_MAXIMIZE = process.env.JOY_COIN_MAXIMIZE === '1'
-$.log(`最大化收益模式: 已${$.JOY_COIN_MAXIMIZE ? `默认已开启` : `关闭`}  `)
+$.log(`最大化收益模式: 已${$.JOY_COIN_MAXIMIZE ? `默认开启` : `关闭`}  `)
 
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
@@ -60,7 +60,7 @@ message = ""
     return;
   }
   for (let i = 0; i < cookiesArr.length; i++) {
-    //$.wait(50)
+    //$.wait(50) 
     // if (process.env.JOYPARK_JOY_START && i == process.env.JOYPARK_JOY_START){
     //   console.log(`\n汪汪乐园养joy 只运行 ${process.env.JOYPARK_JOY_START} 个Cookie\n`);
     //   break
@@ -85,7 +85,7 @@ message = ""
       // if ($.isNode()) {
       //   if (process.env.HELP_JOYPARK && process.env.HELP_JOYPARK == "false") {
       //   } else {
-      //     // await getShareCode()
+      //     await getShareCode()
       //     if ($.kgw_invitePin && $.kgw_invitePin.length) {
       //       $.log("开始帮【zero205】助力开工位\n");
       //       $.kgw_invitePin = [...($.kgw_invitePin || [])][Math.floor((Math.random() * $.kgw_invitePin.length))];
@@ -114,7 +114,7 @@ message = ""
       await doJoyMoveDownAll($.workJoyInfoList)
       //从低合到高
       await doJoyMergeAll($.activityJoyList)
-      await getJoyList(true)
+      await getGameMyPrize()
     }
   }
 })()
@@ -135,7 +135,7 @@ async function getJoyBaseInfo(taskId = '', inviteType = '', inviterPin = '', pri
           if (printLog) {
             $.log(`等级: ${data.data.level}|金币: ${data.data.joyCoin}`);
             if (data.data.level >= 30 && $.isNode()) {
-              await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】${$.nickName || $.UserName}\n当前等级: ${data.data.level}\n已达到单次最高等级奖励\n请尽快前往活动查看领取\n活动入口：京东极速版APP->汪汪乐园\n更多脚本->"https://github.com/zero205/JD_tencent_scf"`);
+              await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】${$.nickName || $.UserName}\n当前等级: ${data.data.level}\n已达到单次最高等级奖励\n请前往京东极速版APP查看使用优惠券\n活动入口：京东极速版APP->我的->汪汪乐园`);
               $.log(`\n开始解锁新场景...\n`);
               await doJoyRestart()
             }
@@ -223,9 +223,9 @@ async function doJoyMoveUpAll(activityJoyList, workJoyInfoList) {
     await getJoyList()
     await doJoyMoveUpAll($.activityJoyList, $.workJoyInfoList)
   }
-  // else if ($.JOY_COIN_MAXIMIZE) {
-  //   await joyCoinMaximize(workJoyInfoUnlockList)
-  // }
+  else if ($.JOY_COIN_MAXIMIZE) {
+    await joyCoinMaximize(workJoyInfoUnlockList)
+  }
 
 }
 
@@ -426,6 +426,60 @@ function doJoyRestart() {
         } else {
           data = JSON.parse(data);
           $.log(`新场景解锁 ${data.success ? `成功！` : `失败！【${data.errMsg}】 code=${data.code}`}`)
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
+function getGameMyPrize() {
+  return new Promise(resolve => {
+    $.post(taskPostClientActionUrl(`body={"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `gameMyPrize`), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          data = JSON.parse(data);
+          if (data.success && data.data) {
+            $.Vos = data.data.gamePrizeItemVos
+            for (let i = 0; i < $.Vos.length; i++) {
+              if ($.Vos[i].prizeType == 4 && $.Vos[i].status == 1 && $.Vos[i].prizeTypeVO.prizeUsed == 0) {
+                $.log(`\n当前账号有【${$.Vos[i].prizeName}】可提现`)
+                $.id = $.Vos[i].prizeTypeVO.id
+                $.poolBaseId = $.Vos[i].prizeTypeVO.poolBaseId
+                $.prizeGroupId = $.Vos[i].prizeTypeVO.prizeGroupId
+                $.prizeBaseId = $.Vos[i].prizeTypeVO.prizeBaseId
+                await apCashWithDraw($.id, $.poolBaseId, $.prizeGroupId, $.prizeBaseId)
+              }
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
+function apCashWithDraw(id, poolBaseId, prizeGroupId, prizeBaseId) {
+  return new Promise(resolve => {
+    $.post(taskPostClientActionUrl(`body={"businessSource":"JOY_PARK","base":{"id":${id},"business":"joyPark","poolBaseId":${poolBaseId},"prizeGroupId":${prizeGroupId},"prizeBaseId":${prizeBaseId},"prizeType":4},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&_t=${+new Date()}&appid=activities_platform`, `apCashWithDraw`), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          data = JSON.parse(data);
+          if (data.success && data.data) {
+            console.log(`提现结果：${JSON.stringify(data)}`)
+          }
         }
       } catch (e) {
         $.logErr(e, resp)

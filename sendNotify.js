@@ -25,9 +25,9 @@ let GOTIFY_PRIORITY = 0;
 //gobot_token 填写在go-cqhttp文件设置的访问密钥
 //gobot_qq 填写推送到个人QQ或者QQ群号
 //go-cqhttp相关API https://docs.go-cqhttp.org/api
-let GOBOT_URL = ''; // 推送到个人QQ: http://127.0.0.1/send_private_msg  群：http://127.0.0.1/send_group_msg 
+let GOBOT_URL = ''; // 推送到个人QQ: http://127.0.0.1/send_private_msg  群：http://127.0.0.1/send_group_msg
 let GOBOT_TOKEN = ''; //访问密钥
-let GOBOT_QQ = ''; // 如果GOBOT_URL设置 /send_private_msg 则需要填入 user_id=个人QQ 相反如果是 /send_group_msg 则需要填入 group_id=QQ群 
+let GOBOT_QQ = ''; // 如果GOBOT_URL设置 /send_private_msg 则需要填入 user_id=个人QQ 相反如果是 /send_group_msg 则需要填入 group_id=QQ群
 
 // =======================================微信server酱通知设置区域===========================================
 //此处填你申请的SCKEY.
@@ -198,7 +198,7 @@ if (process.env.PUSH_PLUS_USER) {
 async function sendNotify(
   text,
   desp,
-  params = '',
+  params = {''},
   author = '',
 ) {
   let no_notify = process.env.no_notify
@@ -440,26 +440,36 @@ function CoolPush(text, desp) {
 }
 
 function BarkNotify(text, desp, params = {}) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     if (BARK_PUSH) {
+      const index = BARK_PUSH.lastIndexOf('/') + 1
+      const url = BARK_PUSH.substr(0,index)+"push"
+      const device_key = BARK_PUSH.substr(index)
+      params['Group'] = `${BARK_GROUP}`;
       const options = {
-        url: `${BARK_PUSH}/${encodeURIComponent(text)}/${encodeURIComponent(
-          desp,
-        )}?sound=${BARK_SOUND}&group=${BARK_GROUP}&${querystring.stringify(params)}`,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+        url,
+        json:{
+        device_key,
+        title: text,
+        body:desp,
+        sound:BARK_SOUND,
+        group:BARK_GROUP,
+        ext_params:params
         },
-        timeout,
-      };
-      $.get(options, (err, resp, data) => {
+         headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        timeout
+      }
+      $.post(options, (err, resp, data) => {
         try {
           if (err) {
-            console.log('Bark APP发送通知调用API失败！！\n');
+            console.log('Bark APP发送通知调用API失败！！\n')
             console.log(err);
           } else {
             data = JSON.parse(data);
             if (data.code === 200) {
-              console.log('Bark APP发送通知消息成功🎉\n');
+              console.log('Bark APP发送通知消息成功🎉\n')
             } else {
               console.log(`${data.message}\n`);
             }
@@ -469,11 +479,12 @@ function BarkNotify(text, desp, params = {}) {
         } finally {
           resolve();
         }
-      });
+      })
     } else {
-      resolve();
+      console.log('您未提供Bark的APP推送BARK_PUSH，取消Bark推送消息通知🚫\n');
+      resolve()
     }
-  });
+  })
 }
 
 function tgBotNotify(text, desp) {
