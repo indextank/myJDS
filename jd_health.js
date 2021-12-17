@@ -24,9 +24,21 @@ const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const notify = $.isNode() ? require('./sendNotify') : "";
 let cookiesArr = [], cookie = "", allMessage = "", message;
 const inviteCodes = [
-  `T0225KkcRh9P9FbRKUygl_UJcgCjVfnoaW5kRrbA@T0159KUiH11Mq1bSKBoCjVfnoaW5kRrbA@T018v_hzQhwZ8FbUIRib1ACjVfnoaW5kRrbA`,
-  `T0225KkcRh9P9FbRKUygl_UJcgCjVfnoaW5kRrbA@T0159KUiH11Mq1bSKBoCjVfnoaW5kRrbA@T018v_hzQhwZ8FbUIRib1ACjVfnoaW5kRrbA`,
-  `T0225KkcRh9P9FbRKUygl_UJcgCjVfnoaW5kRrbA@T0159KUiH11Mq1bSKBoCjVfnoaW5kRrbA@T018v_hzQhwZ8FbUIRib1ACjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`,
+  `T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA@T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA@T0084qAiHhYeCjVfnoaW5kRrbA@T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA`
 ]
 const ZLC = !(process.env.JD_JOIN_ZLC && process.env.JD_JOIN_ZLC === 'false')
 let reward = process.env.JD_HEALTH_REWARD_NAME ? process.env.JD_HEALTH_REWARD_NAME : ''
@@ -39,7 +51,7 @@ function oc(fn, defaultVal) {//optioanl chaining
   }
 }
 function nc(val1, val2) {//nullish coalescing
-  return val1 ? val1 : val2
+  return val1 != undefined ? val1 : val2
 }
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -175,7 +187,7 @@ function getTaskDetail(taskId = '') {
               await $.wait(1000 * (oc(() => data.data.result.taskVos[0].waitDuration) || 3));
               await doTask(oc(() => data.data.result.taskVos[0].shoppingActivityVos[0].taskToken), 22, 0);//完成任务
             } else {
-              for (let vo of nc(oc(() => data.data.result.taskVos.filter(vo => vo.taskType !== 19 && vo.taskType !== 25)) , [])) {
+              for (let vo of nc(oc(() => data.data.result.taskVos.filter(vo => ![19,25,15,21].includes(vo.taskType))) , [])) {
                 console.log(`${vo.taskName}任务，完成次数：${vo.times}/${vo.maxTimes}`)
                 for (let i = vo.times; i < vo.maxTimes; i++) {
                   console.log(`去完成${vo.taskName}任务`)

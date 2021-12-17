@@ -105,7 +105,6 @@ async function perl_auto() {
       })
     }
     // console.debug('prizes:',prizes)
-
     for (let i = 0; i < prizes.length; i++) {
       const prize = prizes[i]
       console.log('兑换面额:', prize.strPrizeName || '随机红包')
@@ -261,7 +260,7 @@ async function requestAlgo() {
       "expandParams": ""
     })
   }
-  new Promise(async resolve => {
+  return new Promise(async resolve => {
     $.post(options, (err, resp, data) => {
       try {
         if (err) {
