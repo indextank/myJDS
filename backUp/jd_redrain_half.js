@@ -25,10 +25,12 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
+let jd_redrain_half_url =  '';
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
   })
+  if (process.env.jd_redrain_half_url) jd_redrain_half_url = process.env.jd_redrain_half_url
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => { };
   if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0)
 } else {
@@ -40,12 +42,16 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', { "open-url": "https://bean.m.jd.com/" });
     return;
   }
+  if (!jd_redrain_half_url) {
+    $.log(`\n甘露殿【https://t.me/jdredrain】提醒你:今日龙王🐲出差，天气晴朗☀️，改日再来～\n`);
+    return;
+  }
   let hour = (new Date().getUTCHours() + 8) % 24;
-  $.log(`\n正在远程获取${hour}点30分京豆雨ID\n`);
+  $.log(`\n甘露殿【https://t.me/jdredrain】提醒你:正在远程获取${hour}点30分京豆雨ID\n`);
   await $.wait(1000);
-  let redIds = await getRedRainIds();
+  let redIds = await getRedRainIds(jd_redrain_half_url);
   if (!redIds.length) {
-    $.log(`\n今日龙王🐲出差，天气晴朗☀️，改日再来～\n`);
+    $.log(`\n甘露殿【https://t.me/jdredrain】提醒你:今日龙王🐲出差，天气晴朗☀️，改日再来～\n`);
     return;
   }
   for (let id of redIds) {
@@ -53,7 +59,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       console.log(`\nRRA: "${id}"不符合规则\n`);
       continue;
     }
-    console.log(`\n龙王就位:${id}，正在领取${hour}点30分京豆雨\n`);
+    console.log(`\n甘露殿【https://t.me/jdredrain】提醒你:龙王就位:${id}，正在领取${hour}点30分京豆雨\n`);
     for (let i = 0; i < cookiesArr.length; i++) {
       if (cookiesArr[i]) {
         cookie = cookiesArr[i];
@@ -138,7 +144,7 @@ function taskUrl(function_id, body = {}) {
   }
 }
 
-function getRedRainIds(url = "") {
+function getRedRainIds(url) {
   return new Promise(async resolve => {
     const options = {
       url: `${url}?${new Date()}`, "timeout": 10000, headers: {
