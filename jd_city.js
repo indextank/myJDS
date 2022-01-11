@@ -41,7 +41,7 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let author_codes = ['oe37W64MY2ZAYhCrCpeJ91Jy3zmL','-ryUXP5eZ2IXZRbCSN_E80R_EoHW0-zH'].sort(() => 0.5 - Math.random())
+let author_codes = [].sort(() => 0.5 - Math.random())
 const self_code = []
 let pool = []
 !(async () => {
@@ -60,11 +60,10 @@ let pool = []
   } else {
     console.log(`脚本不会自动抽奖，设置JD_CITY_EXCHANGE为true，默认关闭`)
   }
-  // if (process.env.CT_R != 'false') {
-  //   cookiesArr = cookiesArr.sort(() => 0.5 - Math.random())
-  //   console.log('CK顺序打乱!用来随机内部互助!,如需关闭CT_R为false')
-  // }
-  console.log('明日可能默认开启CK打乱（随机内部互助）,如需关闭请提前设置CT_R为false')
+  if (process.env.CT_R != 'false') {
+    cookiesArr = cookiesArr.sort(() => 0.5 - Math.random())
+    console.log('CK顺序打乱!用来随机内部互助!,如需关闭CT_R为false')
+  }
   let res = await getAuthorShareCode('https://raw.githubusercontent.com/indextank/myJDS/master/shareCodes/city.json')
   if (res) {
     author_codes = res.sort(() => 0.5 - Math.random())
@@ -172,7 +171,7 @@ function taskPostUrl(functionId,body) {
   }
 }
 function getInfo(inviteId, flag = false) {
-  let body = {"lbsCity":"16","realLbsCity":"1315","inviteId":inviteId,"headImg":"","userName":""}
+  let body = {"lbsCity":"16","realLbsCity":"1315","inviteId":inviteId,"headImg":"","userName":"","taskChannel":"1"}
   return new Promise((resolve) => {
     $.post(taskPostUrl("city_getHomeDatav1",body), async (err, resp, data) => {
       // console.debug(data)
@@ -195,6 +194,12 @@ function getInfo(inviteId, flag = false) {
             }
 //             if (process.env.CT_RE == 'true') {
               if (data.data && data['data']['bizCode'] === 0) {
+                for(let vo of data.data.result && data.data.result.popWindows || []){
+                  if (vo && vo.type === "dailycash_second") {
+                    await receiveCash()
+                    await $.wait(2*1000)
+                  }
+                }
                 for(let vo of data.data.result && data.data.result.mainInfos || []){
                   if (vo && vo.remaingAssistNum === 0 && vo.status === "1") {
                     console.log(vo.roundNum)
@@ -216,8 +221,10 @@ function getInfo(inviteId, flag = false) {
     })
   })
 }
-function receiveCash(roundNum) {
-  let body = {"cashType":1,"roundNum":roundNum}
+function receiveCash(roundNum = '') {
+  let body = {"cashType":2}
+  if(roundNum) body = {"cashType":1,"roundNum":roundNum}
+  if(roundNum == -1) body = {"cashType":4}
   return new Promise((resolve) => {
     $.post(taskPostUrl("city_receiveCash",body), async (err, resp, data) => {
       try {
