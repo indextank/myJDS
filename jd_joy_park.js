@@ -58,7 +58,7 @@ message = ""
     console.log(`\n******检测到您设置了不运行汪汪乐园，停止运行此脚本******\n`)
     return;
   }
-  for (let i = 0; i < cookiesArr.length; i++) {
+  for (let i = 1; i < cookiesArr.length; i++) {
     //$.wait(50) 
     // if (process.env.JOYPARK_JOY_START && i == process.env.JOYPARK_JOY_START){
     //   console.log(`\n汪汪乐园养joy 只运行 ${process.env.JOYPARK_JOY_START} 个Cookie\n`);
