@@ -1,6 +1,5 @@
 {
-    "jd_ddworld_exchange": [0],
-    "jd_nhs_red": [0,12,23],
+    "jd_nhs_rp": [0,10,20],
     "jd_city": [1, 13, 23],
     "jd_m_sign":[0],
     "jd_computer": [0],
@@ -58,8 +57,6 @@
     "jd_jump":[3, 21],
     "jd_nnfls": [10,20],
     "jd_fanli": [10],
-    "jd_lxLottery": [10],
-    "jd_mofang_ex": [10],
     "jd_cjhz": [3,13],
     "jd_mpdzcar": [10],
     "jd_mpdzcar_game": [5,9,13],
