@@ -36,7 +36,7 @@ const ZLC = !(process.env.JD_JOIN_ZLC && process.env.JD_JOIN_ZLC === 'false')
 const randomCount = $.isNode() ? 20 : 5;
 const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
-let myInviteCode;
+let self_code = []
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
@@ -128,7 +128,7 @@ function interact_template_getHomeData(timeout = 0) {
             //签到
             if (data.data.result.taskVos[i].taskName === '邀请好友助力') {
               console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.data.result.taskVos[i].assistTaskDetailVo.taskToken}\n`);
-              myInviteCode = data.data.result.taskVos[i].assistTaskDetailVo.taskToken;
+              self_code.push(data.data.result.taskVos[i].assistTaskDetailVo.taskToken)
               for (let code of $.newShareCodes) {
                 if (!code) continue
                 const c =  await harmony_collectScore(code, data.data.result.taskVos[i].taskId);
@@ -206,7 +206,7 @@ function harmony_collectScore(taskToken,taskId,itemId = "",actionType = 0,timeou
       //if (appId === "1EFRTxQ") url.body += "&appid=golden-egg"
       $.post(url, async (err, resp, data) => {
         try {
-        
+
           data = JSON.parse(data);
           if (data.data.bizMsg === "任务领取成功") {
             await harmony_collectScore(taskToken,taskId,itemId,0,parseInt(browseTime) * 1000);
@@ -313,20 +313,18 @@ function shareCodesFormat() {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
     $.newShareCodes = [];
     if ($.shareCodesArr[$.index - 1]) {
+      console.log('检测到助力码环境变量,在前')
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
-    } else {
-      console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
-      const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
-      $.newShareCodes = inviteCodes[tempIndex].split('@');
     }
-    // if (!ZLC) {
-    //   console.log(`您设置了不加入助力池，跳过\n`)
-    // } else {
-    //   const readShareCodeRes = await readShareCode();
-    //   if (readShareCodeRes && readShareCodeRes.code === 200) {
-    //     $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
-    //   }
-    // }
+    $.newShareCodes = [...new Set([...$.newShareCodes, ...self_code,...inviteCodes])]
+    if (!ZLC) {
+      console.log(`您设置了不加入助力池，跳过\n`)
+    } else {
+      const readShareCodeRes = await readShareCode();
+      if (readShareCodeRes && readShareCodeRes.code === 200) {
+        $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])]
+      }
+    }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
