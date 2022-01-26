@@ -146,20 +146,6 @@ async function jdPet() {
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.petInfo.shareCode}\n`);
       jdPetShareArr.push($.petInfo.shareCode)
 
-      // ***************************
-      // 报告运行次数
-      if (ZLC) {
-        for (let k = 0; k < 5; k++) {
-          try {
-            await runTimes()
-            break
-          } catch (e) {
-          }
-          await $.wait(Math.floor(Math.random() * 10 + 3) * 1000)
-        }
-      }
-      // ***************************
-
       await taskInit();
       if ($.taskInit.resultCode === '9999' || !$.taskInit.result) {
         console.log('初始化任务异常, 请稍后再试');
@@ -190,21 +176,7 @@ async function jdPet() {
     // $.msg($.name, '', `${errMsg}`)
   }
 }
-function runTimes(){
-  return new Promise((resolve, reject) => {
-    $.get({
-        url: `https://api.jdsharecode.xyz/api/runTimes?activityId=pet&sharecode=${$.petInfo.shareCode}`
-      }, (err, resp, data) => {
-        if (err) {
-        console.log('上报失败', err)
-        reject(err)
-      } else {
-        console.log(data)
-        resolve()
-      }
-    })
-  })
-}
+
 // 收取所有好感度
 async function energyCollect() {
   console.log('开始收取任务奖励好感度');

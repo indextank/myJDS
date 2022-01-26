@@ -133,19 +133,6 @@ async function jdFruit() {
   try {
     await initForFarm();
     if ($.farmInfo.farmUserPro) {
-      // ***************************
-      // 报告运行次数
-      if (ZLC) {
-        for (let k = 0; k < 5; k++) {
-          try {
-            await runTimes()
-            break
-          } catch (e) {
-          }
-          await $.wait(Math.floor(Math.random() * 10 + 3) * 1000)
-        }
-      }
-      // ***************************
       // option['media-url'] = $.farmInfo.farmUserPro.goodsImage;
       message = `【水果名称】${$.farmInfo.farmUserPro.name}\n`;
       // console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.farmInfo.farmUserPro.shareCode}\n`);
@@ -197,21 +184,7 @@ async function jdFruit() {
   }
   await showMsg();
 }
-function runTimes() {
-  return new Promise((resolve, reject) => {
-    $.get({
-      url: `https://api.jdsharecode.xyz/api/runTimes?activityId=farm&sharecode=${$.farmInfo.farmUserPro.shareCode}`
-    }, (err, resp, data) => {
-      if (err) {
-        console.log('上报失败', err)
-        reject(err)
-      } else {
-        console.log(data)
-        resolve()
-      }
-    })
-  })
-}
+
 async function doDailyTask() {
   await taskInitForFarm();
   console.log(`开始签到`);
