@@ -75,15 +75,15 @@ RemainMessage += '【其他】京喜红包只能在京喜使用,其他同理';
 let WP_APP_TOKEN_ONE = "";
 
 let TempBaipiao = "";
-if ($.isNode() && process.env.WP_APP_TOKEN_ONE) {
-	WP_APP_TOKEN_ONE = process.env.WP_APP_TOKEN_ONE;
-}
 
 let doExJxBeans ="false";
 let time = new Date().getHours();
 if ($.isNode()) {
+  if ($.isNode() && process.env.WP_APP_TOKEN_ONE) {
+  	WP_APP_TOKEN_ONE = process.env.WP_APP_TOKEN_ONE;
+  }
 	if(process.env.BEANCHANGE_ExJxBeans=="true"){
-		if (time >= 17){ 
+		if (time >= 17){
 			console.log(`检测到设定了临期京豆转换喜豆...`);
 			doExJxBeans = process.env.BEANCHANGE_ExJxBeans;
 		} else{
@@ -119,7 +119,13 @@ if ($.isNode() && process.env.BEANCHANGE_USERGP4) {
 	//EnableMonth = process.env.BEANCHANGE_ENABLEMONTH;
 //}
 
-if ($.isNode() && process.env.BEANCHANGE_ALLNOTIFY) {	
+if ($.isNode() && process.env.BEANCHANGE_SUBNOTIFY) {
+	strSubNotify=process.env.BEANCHANGE_SUBNOTIFY;
+	strSubNotify+="\n";
+	console.log(`检测到预览置顶内容,将在一对一推送的预览显示...\n`);
+}
+
+if ($.isNode() && process.env.BEANCHANGE_ALLNOTIFY) {
 	strAllNotify=process.env.BEANCHANGE_ALLNOTIFY;
 	console.log(`检测到设定了公告,将在推送信息中置顶显示...`);
 	strAllNotify = `【✨✨✨✨公告✨✨✨✨】\n`+strAllNotify;
@@ -127,11 +133,7 @@ if ($.isNode() && process.env.BEANCHANGE_ALLNOTIFY) {
 	strAllNotify +=`\n🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏`
 }
 
-if ($.isNode() && process.env.BEANCHANGE_SUBNOTIFY) {	
-	strSubNotify=process.env.BEANCHANGE_SUBNOTIFY;
-	strSubNotify+="\n";
-	console.log(`检测到预览置顶内容,将在一对一推送的预览显示...\n`);	
-}
+
 
 
 if (EnableMonth == "true" && Today.getDate() == 1 && Today.getHours() > 17)
@@ -157,7 +159,7 @@ if ($.isNode()) {
 //查询开关
 let strDisableList = "";
 let DisableIndex=-1;
-if ($.isNode()) {	
+if ($.isNode()) {
 	strDisableList = process.env.BEANCHANGE_DISABLELIST ? process.env.BEANCHANGE_DISABLELIST.split('&') : [];
 }
 
@@ -168,7 +170,7 @@ if(DisableIndex!=-1){
 	console.log("检测到设定关闭喜豆查询");
 	EnableJxBeans=false
 }
-	
+
 //汪汪乐园
 let EnableJoyPark=true;
 DisableIndex = strDisableList.findIndex((item) => item === "汪汪乐园");
@@ -190,15 +192,15 @@ let EnableJdMs=true;
 DisableIndex = strDisableList.findIndex((item) => item === "京东秒杀");
 if(DisableIndex!=-1){
 	console.log("检测到设定关闭京东秒杀查询");
-	EnableJdMs=false;	
+	EnableJdMs=false;
 }
-	
+
 //东东农场
 let EnableJdFruit=true;
 DisableIndex = strDisableList.findIndex((item) => item === "东东农场");
 if(DisableIndex!=-1){
 	console.log("检测到设定关闭东东农场查询");
-	EnableJdFruit=false;	
+	EnableJdFruit=false;
 }
 
 //极速金币
@@ -206,7 +208,7 @@ let EnableJdSpeed=true;
 DisableIndex = strDisableList.findIndex((item) => item === "极速金币");
 if(DisableIndex!=-1){
 	console.log("检测到设定关闭极速金币查询");
-	EnableJdSpeed=false;	
+	EnableJdSpeed=false;
 }
 
 //京喜牧场
@@ -214,14 +216,14 @@ let EnableJxMC=true;
 DisableIndex= strDisableList.findIndex((item) => item === "京喜牧场");
 if(DisableIndex!=-1){
 	console.log("检测到设定关闭京喜牧场查询");
-	EnableJxMC=false;	
+	EnableJxMC=false;
 }
 //京喜工厂
 let EnableJxGC=true;
 DisableIndex=strDisableList.findIndex((item) => item === "京喜工厂");
 if(DisableIndex!=-1){
 	console.log("检测到设定关闭京喜工厂查询");
-	EnableJxGC=false;	
+	EnableJxGC=false;
 }
 
 // 京东工厂
@@ -229,22 +231,22 @@ let EnableJDGC=true;
 DisableIndex=strDisableList.findIndex((item) => item === "京东工厂");
 if(DisableIndex!=-1){
 	console.log("检测到设定关闭京东工厂查询");
-	EnableJDGC=false;	
+	EnableJDGC=false;
 }
 //领现金
 let EnableCash=true;
 DisableIndex=strDisableList.findIndex((item) => item === "领现金");
 if(DisableIndex!=-1){
 	console.log("检测到设定关闭领现金查询");
-	EnableCash=false;	
-}	
+	EnableCash=false;
+}
 
 //金融养猪
 let EnablePigPet=true;
 DisableIndex=strDisableList.findIndex((item) => item === "金融养猪");
 if(DisableIndex!=-1){
 	console.log("检测到设定关闭金融养猪查询");
-	EnablePigPet=false;	
+	EnablePigPet=false;
 }
 //东东萌宠
 let EnableJDPet=true;
@@ -260,7 +262,7 @@ if(DisableIndex!=-1){
 	RemainMessage="";
 }
 
-	
+
 !(async() => {
 	if (!cookiesArr[0]) {
 		$.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {
@@ -307,12 +309,12 @@ if(DisableIndex!=-1){
 			$.JingXiang = "";
 			$.allincomeBean = 0; //月收入
 			$.allexpenseBean = 0; //月支出
-			$.joylevel = 0;	
+			$.joylevel = 0;
 			$.beanChangeXi=0;
 			$.inJxBean=0;
 			$.OutJxBean=0;
 			$.todayinJxBean=0;
-			$.todayOutJxBean=0;	
+			$.todayOutJxBean=0;
 			$.xibeanCount = 0;
 			$.PigPet = '';
 			TempBaipiao = "";
@@ -334,20 +336,20 @@ if(DisableIndex!=-1){
 				}
 				continue
 			}
-			
+
 			//汪汪乐园
 			if(EnableJoyPark)
 				await getJoyBaseInfo();
-			
+
 			//京东赚赚
 			if(EnableJdZZ)
 				await getJdZZ();
-			
+
 			//京东秒杀
 			if(EnableJdMs)
 				await getMs();
-			
-			//东东农场			
+
+			//东东农场
 			if(EnableJdFruit){
 				await jdfruitRequest('taskInitForFarm', {
 					"version": 14,
@@ -359,45 +361,45 @@ if(DisableIndex!=-1){
 			//极速金币
 			if(EnableJdSpeed)
 				await cash();
-			
+
 			//京喜牧场
 			if(EnableJxMC){
 				await requestAlgo();
 				await JxmcGetRequest();
 			}
-			
+
 			//京豆查询
 			await bean();
-			
+
 			if (llShowMonth) {
 				console.log("开始获取月数据，请稍后...");
 				await Monthbean();
 				console.log("月数据获取完毕，暂停10秒防止IP被黑...");
 				await $.wait(10 * 1000);
 			}
-			
+
 			//京喜工厂
 			if(EnableJxGC)
-				await getJxFactory(); 
-			
-			// 京东工厂			
+				await getJxFactory();
+
+			// 京东工厂
 			if(EnableJDGC)
-				await getDdFactoryInfo(); 
-			
+				await getDdFactoryInfo();
+
 			//领现金
-			if(EnableCash)				
+			if(EnableCash)
 				await jdCash();
-			
+
 			//喜豆查询
 			if(EnableJxBeans){
 				await GetJxBeanInfo();
 				await jxbean();
 			}
-			
+
 			//金融养猪
-			if(EnablePigPet)	
+			if(EnablePigPet)
 				await GetPigPetInfo();
-			
+
 			await showMsg();
 			if (intPerSent > 0) {
 				if ((i + 1) % intPerSent == 0) {
@@ -475,7 +477,7 @@ if(DisableIndex!=-1){
 				var TempMessage=allMessage;
 				if(strAllNotify)
 					allMessage=strAllNotify+`\n`+allMessage;
-				
+
 				await notify.sendNotify(`${$.name}`, `${allMessage}`, {
 					url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`
 				}, '\n\n本通知 By ccwav Mod',TempMessage)
@@ -519,7 +521,7 @@ if(DisableIndex!=-1){
 			var TempMessage=allMessage;
 			if(strAllNotify)
 				allMessage=strAllNotify+`\n`+allMessage;
-			
+
 			await notify.sendNotify(`${$.name}`, `${allMessage}`, {
 				url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`
 			}, '\n\n本通知 By ccwav Mod',TempMessage)
@@ -603,7 +605,7 @@ async function showMsg() {
 	if (MessageUserGp4) {
 		userIndex4 = MessageUserGp4.findIndex((item) => item === $.pt_pin);
 	}
-	
+
 	if (userIndex2 != -1) {
 		IndexGp2 += 1;
 		ReturnMessageTitle = `【账号${IndexGp2}🆔】${$.nickName || $.UserName}\n`;
@@ -690,41 +692,41 @@ async function showMsg() {
 	ReturnMessage += `\n`;
 	strsummary+= `\n`;
 	ReturnMessage += `【昨日京豆】收${$.incomeBean}豆`;
-	
+
 	if ($.expenseBean != 0) {
-		ReturnMessage += `,支${$.expenseBean}豆`;		
+		ReturnMessage += `,支${$.expenseBean}豆`;
 	}
-	ReturnMessage += `\n`;	
-	
-	if ($.beanCount){		
+	ReturnMessage += `\n`;
+
+	if ($.beanCount){
 		ReturnMessage += `【当前京豆】${$.beanCount}豆(≈${(($.beanCount-$.beanChangeXi)/ 100).toFixed(2)}元)\n`;
-		strsummary+= `【当前京豆】${$.beanCount}豆(≈${(($.beanCount-$.beanChangeXi)/ 100).toFixed(2)}元)\n`;	
+		strsummary+= `【当前京豆】${$.beanCount}豆(≈${(($.beanCount-$.beanChangeXi)/ 100).toFixed(2)}元)\n`;
 	} else {
 		if($.levelName || $.JingXiang)
 			ReturnMessage += `【当前京豆】获取失败,接口返回空数据\n`;
 		else{
 			ReturnMessage += `【当前京豆】${$.beanCount}豆(≈${(($.beanCount-$.beanChangeXi)/ 100).toFixed(2)}元)\n`;
 			strsummary += `【当前京豆】${$.beanCount}豆(≈${(($.beanCount-$.beanChangeXi)/ 100).toFixed(2)}元)\n`;
-		}			
+		}
 	}
-	
+
 	if (EnableJxBeans) {
-		ReturnMessage += `【今日喜豆】收${$.todayinJxBean}豆`;		
+		ReturnMessage += `【今日喜豆】收${$.todayinJxBean}豆`;
 		if ($.todayOutJxBean != 0) {
-			ReturnMessage += `,支${$.todayOutJxBean}豆`;			
+			ReturnMessage += `,支${$.todayOutJxBean}豆`;
 		}
-		ReturnMessage += `\n`;		
-		ReturnMessage += `【昨日喜豆】收${$.inJxBean}豆`;		
+		ReturnMessage += `\n`;
+		ReturnMessage += `【昨日喜豆】收${$.inJxBean}豆`;
 		if ($.OutJxBean != 0) {
-			ReturnMessage += `,支${$.OutJxBean}豆`;			
+			ReturnMessage += `,支${$.OutJxBean}豆`;
 		}
-		ReturnMessage += `\n`;		
+		ReturnMessage += `\n`;
 		ReturnMessage += `【当前喜豆】${$.xibeanCount}喜豆(≈${($.xibeanCount/ 100).toFixed(2)}元)\n`;
 		strsummary += `【当前喜豆】${$.xibeanCount}豆(≈${($.xibeanCount/ 100).toFixed(2)}元)\n`;
 	}
 
 
-	if ($.JDEggcnt) {		
+	if ($.JDEggcnt) {
 		ReturnMessage += `【京喜牧场】${$.JDEggcnt}枚鸡蛋\n`;
 	}
 	if ($.JDtotalcash) {
@@ -853,7 +855,7 @@ async function showMsg() {
 		TempBaipiao += `【京喜工厂】${$.jxFactoryReceive} 可以兑换了!\n`;
 
 	}
-	
+
 	if ($.PigPet) {
 		if (userIndex2 != -1) {
 			ReceiveMessageGp2 += `【账号${IndexGp2} ${$.nickName || $.UserName}】${$.PigPet} (金融养猪)\n`;
@@ -932,15 +934,15 @@ async function showMsg() {
 			}
 		}
 	}
-	
-	if(strGuoqi){		
+
+	if(strGuoqi){
 		ReturnMessage += `💸💸💸临期京豆明细💸💸💸\n`;
 		ReturnMessage += `${strGuoqi}`;
 	}
 	ReturnMessage += `🧧🧧🧧红包明细🧧🧧🧧\n`;
 	ReturnMessage += `${$.message}`;
 	strsummary +=`${$.message}`;
-	
+
 	if (userIndex2 != -1) {
 		allMessageGp2 += ReturnMessageTitle+ReturnMessage + `\n`;
 	}
@@ -959,20 +961,20 @@ async function showMsg() {
 	if ($.isNode() && WP_APP_TOKEN_ONE) {
 		var strTitle="京东资产变动";
 		ReturnMessage=`【账号名称】${$.nickName || $.UserName}\n`+ReturnMessage;
-		
+
 		if (TempBaipiao) {
-			strsummary=strSubNotify+TempBaipiao +strsummary;			
+			strsummary=strSubNotify+TempBaipiao +strsummary;
 			TempBaipiao = `【⏰商品白嫖活动提醒⏰】\n` + TempBaipiao;
-			ReturnMessage = TempBaipiao + `\n` + ReturnMessage;			
+			ReturnMessage = TempBaipiao + `\n` + ReturnMessage;
 		} else {
-			strsummary = strSubNotify + strsummary;				
+			strsummary = strSubNotify + strsummary;
 		}
-		
+
 		ReturnMessage += RemainMessage;
-		
+
 		if(strAllNotify)
 			ReturnMessage=strAllNotify+`\n`+ReturnMessage;
-		
+
 		await notify.sendNotifybyWxPucher(strTitle, `${ReturnMessage}`, `${$.UserName}`,'\n\n本通知 By ccwav Mod',strsummary);
 	}
 
@@ -1042,19 +1044,19 @@ async function bean() {
 	}
 	$.todayOutcomeBean = -$.todayOutcomeBean;
 	$.expenseBean = -$.expenseBean;
-	
+
 	decExBean =0;
 	await queryexpirejingdou();//过期京豆
 	if(decExBean && doExJxBeans=="true"){
 		var jxbeans = await exchangejxbeans(decExBean);
-		if (jxbeans) {			
+		if (jxbeans) {
 			$.beanChangeXi=decExBean;
 			console.log(`已为您将`+decExBean+`临期京豆转换成喜豆！`);
 			strGuoqi += `已为您将`+decExBean+`临期京豆转换成喜豆！\n`;
 		}
 	}
-	
-	await redPacket(); 
+
+	await redPacket();
 }
 
 async function Monthbean() {
@@ -1294,12 +1296,12 @@ function TotalBean2() {
 				if (err) {
 					$.logErr(err);
 				} else {
-					if (data) {						
-						data = JSON.parse(data);						
+					if (data) {
+						data = JSON.parse(data);
 						if (!data.user) {
 							return;
 						}
-						const userInfo = data.user;						
+						const userInfo = data.user;
 						if (userInfo) {
 							if (!$.nickName)
 								$.nickName = userInfo.petName;
@@ -1415,14 +1417,14 @@ function queryexpirejingdou() {
 					if (data) {
 						// console.log(data)
 						data = JSON.parse(data.slice(23, -13));
-						if (data.ret === 0) {							
+						if (data.ret === 0) {
 							data['expirejingdou'].map(item => {
-								if(item['expireamount']!=0){																	
+								if(item['expireamount']!=0){
 									strGuoqi+=`【${timeFormat(item['time'] * 1000)}】过期${item['expireamount']}豆\n`;
 									if (decExBean==0)
 										decExBean=item['expireamount'];
 								}
-							})							
+							})
 						}
 					} else {
 						console.log(`京东服务器返回空数据`)
@@ -1439,7 +1441,7 @@ function queryexpirejingdou() {
 }
 function exchangejxbeans(o) {
     return new Promise(async resolve => {
-		var UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');		
+		var UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 		var JXUA = `jdpingou;iPhone;4.13.0;14.4.2;${UUID};network/wifi;model/iPhone10,2;appBuild/100609;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/1;hasOCPay/0;supportBestPay/0;session/${Math.random * 98 + 1};pap/JA2019_3111789;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`;
         const options = {
             "url": `https://m.jingxi.com/deal/masset/jd2xd?use=${o}&canpintuan=&setdefcoupon=0&r=${Math.random()}&sceneval=2`,
@@ -1577,7 +1579,7 @@ function getJdZZ() {
 					console.log(`京东赚赚API请求失败，请检查网路重试`);
 				} else {
 					if (safeGet(data)) {
-						data = JSON.parse(data);						
+						data = JSON.parse(data);
 						$.JdzzNum = data.data.totalNum;
 					}
 				}
@@ -1618,7 +1620,7 @@ function getMs() {
 				} else {
 					if (safeGet(data)) {
 						//console.log("Debug :" + JSON.stringify(data));
-						data = JSON.parse(data);						
+						data = JSON.parse(data);
 						if (data.result.assignment.assignmentPoints) {
 							$.JdMsScore = data.result.assignment.assignmentPoints || 0
 						}
@@ -2178,8 +2180,8 @@ function GetJxBeanDetailData() {
             console.log(JSON.stringify(err));
             console.log(`GetJxBeanDetailData请求失败，请检查网路重试`);
           } else {
-            data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);      
-            
+            data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+
           }
         } catch (e) {
           $.logErr(e, resp);
@@ -2197,7 +2199,7 @@ function GetJxBeanInfo() {
             console.log(JSON.stringify(err));
             console.log(`GetJxBeanInfo请求失败，请检查网路重试`);
           } else {
-            data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);      
+            data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
             if(data){
 				if(data.errcode==0){
 					$.xibeanCount=data.data.xibean;
@@ -2263,7 +2265,7 @@ async function jxbean() {
 }
 
 
-	
+
 function randomString(e) {
 	e = e || 32;
 	let t = "0123456789abcdef",
@@ -2474,7 +2476,7 @@ function GetPigPetInfo() {
                     if (data) {
                         data = JSON.parse(data);
                         if (data.resultData.resultData.wished && data.resultData.resultData.wishAward) {
-							$.PigPet=`${data.resultData.resultData.wishAward.name}`                           
+							$.PigPet=`${data.resultData.resultData.wishAward.name}`
                         }
                     } else {
                         console.log(`GetPigPetInfo: 京东服务器返回空数据`)

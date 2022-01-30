@@ -1,9 +1,7 @@
 {
     "jd_computer": [0],
-    "jd_nhs_rpc": [0, 10, 20],
     "jd_m_sign":[0],
     "jd_babel_sign":[0],
-    "jd_nh_sign":[2, 23],
     "jd_redrain": 1,
     "jd_joyjd_open": [13],
     "jd_wxgame": [23],
@@ -11,6 +9,7 @@
     "jx_sign": [8, 13],
     "jd_bean_sign": [1],
     "jd_sign_graphics": [5],
+    "jd_jxlhb": [3, 21],
     "jd_cfd": [6, 8, 10, 12, 14, 16, 18, 20, 22],
     "jd_dreamFactory": [4, 6, 8, 10, 12, 14, 16, 18, 20, 22],
     "jd_jdtj_winner": [6, 12, 15, 21],
@@ -41,7 +40,6 @@
     "jd_plantBean": [7, 9, 11, 13, 15, 17, 19, 21],
     "jd_sddd": [1, 12],
     "jd_sgmh": [8],
-    "jd_shop": [1],
     "jd_speed_redpocke": [2, 22],
     "jd_productZ4Brand": [14,20],
     "jd_tyt": [6, 10, 14, 18, 22],
@@ -57,7 +55,6 @@
     "jd_fanli": [10],
     "jd_bt_sign": [10],
     "jd_ms": [10],
-    "jd_cjhz": [3,13],
     "jd_mhyyl": [0, 12, 18],
     "jd_sjnhj": [10],
     "jd_mpdzcar": [10],
@@ -69,7 +66,6 @@
     "jd_speed_sign": [11, 13],
     "jd_try": [4],
     "jd_cfd_loop": [8, 16],
-    "jd_price": [23],
     "jd_unsubscribe": [23],
     "params":
     {
