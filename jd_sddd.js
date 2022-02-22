@@ -105,35 +105,6 @@ if ($.isNode()) {
     }
     await helpMain();
   }
-  await getAuthorShareCode()
-  if ($.authorCode && $.authorCode.length) {
-
-    for (let i = 0; i < cookiesArr.length && i < $.authorCode.length; i++) {
-      cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
-      $.index = i + 1;
-      $.isLogin = true;
-      $.canHelp = true;
-      $.oneTuanInfo = $.authorCode[i];
-      if ($.oneTuanInfo['completed']) {
-        continue;
-      }
-      console.log(`${$.UserName}去助力${$.oneTuanInfo['user']}`);
-      $.detail = {};
-      $.rewardRecordId = '';
-      await getActivityDetail();
-      if (JSON.stringify($.detail) === '{}') {
-        console.log(`获取活动详情失败`);
-        return;
-      } else {
-        $.rewardRecordId = $.detail.rewardRecordId;
-        console.log(`获取活动详情成功`);
-      }
-      await $.wait(3000);
-      await help();
-      await $.wait(2000);
-    }
-  }
   console.log(`\n开始领取奖励\n`);
   for (let i = 0; i < cookiesArr.length && i < openCount; i++) {
     $.cookie = cookiesArr[i];
@@ -171,32 +142,6 @@ if ($.isNode()) {
     await myReward()
   }
 })().catch((e) => {$.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')}).finally(() => {$.done();});
-
-
-async function getAuthorShareCode() {
-    return new Promise(resolve => {
-        $.get({
-            url: "https://raw.githubusercontent.com/indextank/myJDS/master/shareCodes/sddd.json",
-            headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-            }
-        }, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`);
-                    console.log(`${$.name} API请求失败，请检查网路重试`);
-                } else {
-                    $.authorCode = JSON.parse(data)
-                    $.authorCode = $.authorCode.sort(() => 0.5 - Math.random())
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
-            }
-        })
-    })
-}
 
 async function getActivityInfo(){
   $.activityList = [];
@@ -253,7 +198,7 @@ async function myReward(){
           let canReward = false
           for (let key of Object.keys(data.datas)) {
             let vo = data.datas[key]
-            if (vo.status === 3 && [1,2].includes(vo.type)) {
+            if (vo.status === 3 && vo.type === 2) {
               canReward = true
               $.rewardRecordId = vo.id
               await rewardBean()
@@ -262,7 +207,7 @@ async function myReward(){
           }
           if (!canReward) console.log(`没有可领取奖励`)
         }else{
-          console.log(res.data.desc)
+          console.log(JSON.stringify(data));
         }
       } catch (e) {
         console.log(e);
@@ -465,6 +410,11 @@ async function help() {
       try {
         if (res) {
           res = JSON.parse(res);
+        if (res.errorMessage) {
+          console.log(res.errorMessage);
+          $.oneTuanInfo['completed'] = true
+          return
+        }
           if(res.data.result === 5){
             $.oneTuanInfo['completed'] = true;
           }else if(res.data.result === 0 || res.data.result === 1){
