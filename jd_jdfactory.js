@@ -20,17 +20,17 @@
 ============Quantumultx===============
 [task_local]
 #东东工厂
-10 0,6-23 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png, enabled=true
+34 0,3,5-22 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "10 0,6-23 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js,tag=东东工厂
+cron "34 0,3,5-22 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js,tag=东东工厂
 
 ===============Surge=================
-东东工厂 = type=cron,cronexp="10 0,6-23 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js
+东东工厂 = type=cron,cronexp="34 0,3,5-22 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js
 
 ============小火箭=========
-东东工厂 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, cronexpr="10 0,6-23 * * *", timeout=3600, enable=true
+东东工厂 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, cronexpr="34 0,3,5-22 * * *", timeout=3600, enable=true
  */
 const $ = new Env('东东工厂');
 
@@ -53,7 +53,7 @@ if ($.isNode()) {
 let wantProduct = ``;//心仪商品名称
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 // euper
-const inviteCodes = ['T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVWnYaS5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVWnYaS5kRrbA@T0084qAiHhYeCjVWnYaS5kRrbA@T0225KkcR08R8QCCIhrxkPRfJgCjVWnYaS5kRrbA'];
+const inviteCodes = ['T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVWnYaS5kRrbA@T0084qAiHhYeCjVWnYaS5kRrbA@T0205KkcIkxckBO_WGiKyo1oCjVWnYaS5kRrbA@T0225KkcR0wZ9AbVKEulkfZZcQCjVWnYaS5kRrbA'];
 let myInviteCode;
 $.newShareCode = [];
 const ZLC = !(process.env.JD_JOIN_ZLC && process.env.JD_JOIN_ZLC === 'false')
