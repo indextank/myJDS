@@ -9,17 +9,17 @@ cron 45 * * * * jd_cfd_fresh.js
 ============Quantumultx===============
 [task_local]
 #京喜财富岛合成生鲜
-45 * * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_cfd_fresh.js, tag=京喜财富岛合成生鲜, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png, enabled=true
+45 * * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_cfd_fresh.js, tag=京喜财富岛合成生鲜, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "45 * * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_cfd_fresh.js,tag=京喜财富岛合成生鲜
+cron "45 * * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_cfd_fresh.js,tag=京喜财富岛合成生鲜
 
 ===============Surge=================
-京喜财富岛合成生鲜 = type=cron,cronexp="45 * * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_cfd_fresh.js
+京喜财富岛合成生鲜 = type=cron,cronexp="45 * * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_cfd_fresh.js
 
 ============小火箭=========
-京喜财富岛合成生鲜 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_cfd_fresh.js, cronexpr="45 * * * *", timeout=3600, enable=true
+京喜财富岛合成生鲜 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_cfd_fresh.js, cronexpr="45 * * * *", timeout=3600, enable=true
  */
 const $ = new Env("京喜财富岛合成生鲜");
 const JD_API_HOST = "https://m.jingxi.com/";
@@ -606,7 +606,7 @@ function showMsg() {
 function shareCodesFormat() {
     return new Promise(async resolve => {
         $.newShareCodes = []
-        const readShareCodeRes = await readShareCode();
+        const readShareCodeRes = null;//await readShareCode();
         if (readShareCodeRes && readShareCodeRes.code === 200) {
           $.newShareCodes = [...new Set([...$.shareCodes, ...(readShareCodeRes.data || [])])];
         } else {
@@ -616,28 +616,7 @@ function shareCodesFormat() {
         resolve();
     })
 }
-function readShareCode() {
-    return new Promise(async resolve => {
-        $.get({url: `https://ghproxy.com/https://raw.githubusercontent.com/jiulan/helpRepository/main/json/cfd_hb.json`, 'timeout': 10000}, (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    if (data) {
-                        data = JSON.parse(data);
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve(data);
-            }
-        })
-        await $.wait(10000);
-        resolve()
-    })
-}
+
 function TotalBean() {
     return new Promise(resolve => {
         const options = {
@@ -742,7 +721,7 @@ async function requestAlgo() {
             "expandParams": ""
         })
     }
-    new Promise(async resolve => {
+    return new Promise(async resolve => {
         $.post(options, (err, resp, data) => {
             try {
                 if (err) {

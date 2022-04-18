@@ -8,17 +8,17 @@
 ============Quantumultx===============
 [task_local]
 #东东乐园
-30 7 * * * https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js, tag=东东乐园, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+40 7 * * * https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js, tag=东东乐园, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "30 7 * * *" script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js tag=东东乐园
+cron "40 7 * * *" script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js tag=东东乐园
 
 ===============Surge=================
-东东乐园 = type=cron,cronexp="30 7 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js
+东东乐园 = type=cron,cronexp="40 7 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js
 
 ============小火箭=========
-东东乐园 = type=cron,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js, cronexpr="30 7 * * *", timeout=3600, enable=true
+东东乐园 = type=cron,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js, cronexpr="40 7 * * *", timeout=3600, enable=true
 
  */
 const $ = new Env('东东乐园');
@@ -85,9 +85,9 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                     await browseAward(task.topResource.task.advertId, index, task.type)
                 }
             }
-            // console.log(`\n集勋章得好礼  By：【zero205】`)
-            // console.log(`\n由于我自己写这个脚本的时候已经手动开启活动了\n所以不知道开启活动的代码\n没有开启的手动开启吧，活动入口：东东农场->水车\n`)
-            // await collect()
+            console.log(`\n集勋章得好礼  By：【zero205】`)
+            console.log(`\n由于我自己写这个脚本的时候已经手动开启活动了\n所以不知道开启活动的代码\n没有开启的手动开启吧，活动入口：东东农场->水车\n`)
+            await collect()
         }
     }
 
@@ -175,6 +175,72 @@ function parkInit() {
         });
     });
 }
+
+
+function collect() {
+    return new Promise(async (resolve) => {
+        const options = taskUrl("collect_Init", `{"channel":1}`)
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`);
+                    console.log(`${$.name} API请求失败，请检查网路重试`);
+                } else {
+                    data = JSON.parse(data);
+                    if (data.success) {
+                        if (data.result) {
+                            for (let item of data.result.medalInfo) {
+                                if (item.status == 2) {
+                                    console.log(`【${item.medalName}】勋章未点亮`);
+                                }
+                                else if (item.status == 4) {
+                                    console.log(`【${item.medalName}】勋章已点亮`);
+                                }
+                                else if (item.status == 3) {
+                                    console.log(`【${item.medalName}】勋章可点亮`);
+                                    await collect_taskAward(item.taskType)
+                                }
+                            }
+                        }
+                    } else {
+                        console.log(`\n获取列表失败，${JSON.stringify(data)}`)
+                    }
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve();
+            }
+        });
+    });
+}
+
+function collect_taskAward(type) {
+    return new Promise(async (resolve) => {
+        const options = taskUrl("collect_taskAward", `{"taskType":${type}}`)
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`);
+                    console.log(`${$.name} API请求失败，请检查网路重试`);
+                } else {
+                    data = JSON.parse(data);
+                    if (data.success) {
+                        if (data.result.awardStatus == true)
+                            console.log(`【${item.medalName}】点亮成功`)
+                    } else {
+                        console.log(`\n点亮勋章失败：${JSON.stringify(data)}`)
+                    }
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve();
+            }
+        });
+    });
+}
+
 
 function taskUrl(functionId, body) {
     const time = Date.now();

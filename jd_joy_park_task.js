@@ -34,13 +34,13 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 $.invitePinTaskList = []
-// euper
 $.invitePin = [
-  "eH9Bd7RZX4v_CvaKA6GnarAS9aW-nZJys6DAbJIRUT0",
-  "LJ9_OCKMl-dFrkPPmV265w",
-  "3Ggn3x-Ydktp9_-2OWntKLGgObrKi6zDcjybHKTI2d0",
-  "yQv5Ixqmqjy_U9WcR9dGIQ",
-  "TkR5fxKrmgPxq3jTXVQ6zA"
+  "NZ42T3lD49qiTGpZsSucXRS8kD-wJ4K6FxwxUpNbb4I",
+  "zZkewfd3OKs-WtoJd8Jw6OIrD81WzO3SX56S2DGMlZ0",
+  "7zG4VHS99AUEoX1mQTkC9Q",
+  "BbsjCRrQudIL06kRvqmVln053h03GiApg7HN_Vhy_Og",
+  "sAxL-dc5T6lS6wtKqP6SlA",
+  "bcVxt4PbZdbX7tiT1Q_ubg"
 ]
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
@@ -151,9 +151,8 @@ message = ""
             }
           }
         } else if (task.taskType === 'SHARE_INVITE') {
-          $.yq_taskid = task.id
           for (let j = 0; j < 5; j++) {
-            let resp = await apTaskDrawAward($.yq_taskid, 'SHARE_INVITE');
+            let resp = await apTaskDrawAward(261, 'SHARE_INVITE');
 
             if (!resp.success) {
               break
@@ -167,9 +166,9 @@ message = ""
           $.log(`${task.taskTitle}|${task.taskShowTitle} 领取奖励`)
           await apTaskDrawAward(task.id, task.taskType);
         }
-        // if (task.taskType === 'SHARE_INVITE') {
-        //   $.yq_taskid = task.id
-        // }
+        if (task.taskType === 'SHARE_INVITE') {
+          $.yq_taskid = task.id
+        }
       }
     }
   }

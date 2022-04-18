@@ -4,7 +4,6 @@ const fs = require("fs");
 const yaml = require("js-yaml");
 
 process.env.action = 0;
-const MemorySize=process.env.TENCENTSCF_MEMORYSIZE?(Number(process.env.TENCENTSCF_MEMORYSIZE)>64?128:64):64; 
 const ScfClient = tencentcloud.scf.v20180416.Client;
 const clientConfig = {
   credential: {
@@ -57,10 +56,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         },
         FunctionName: process.env.TENCENT_FUNCTION_NAME,
         Runtime: "Nodejs12.16",
-        MemorySize: MemorySize,
-        Timeout: 21600,
-        AsyncRunEnable: "true",
-        InstallDependency: "true",
+        Timeout: 900,
         Environment: {
           Variables: []
         }
@@ -85,7 +81,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           process.env.action++;
         }
       );
-      await sleep(1000 * 100); // 等待100秒
+      await sleep(1000 * 50); // 等待50秒
     },
     err => {
       console.error("error", err);
@@ -160,7 +156,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       Type: "timer",
       TriggerDesc: vo.timer.parameters.cronExpression,
       CustomArgument: vo.timer.parameters.argument,
-      Enable: vo.timer.parameters.enable ? 'OPEN' : 'CLOSE'
+      Enable: "OPEN"
     };
     await client.CreateTrigger(param).then(
       data => {
