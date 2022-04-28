@@ -11,17 +11,17 @@
 ============Quantumultx===============
 [task_local]
 #京喜工厂
-10 * * * * jd_dreamFactory.js, tag=京喜工厂, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+43 0,6-23/4 * * * jd_dreamFactory.js, tag=京喜工厂, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "10 * * * *" script-path=jd_dreamFactory.js,tag=京喜工厂
+cron "43 0,6-23/4 * * *" script-path=jd_dreamFactory.js,tag=京喜工厂
 
 ===============Surge=================
-京喜工厂 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=3600,script-path=jd_dreamFactory.js
+京喜工厂 = type=cron,cronexp="43 0,6-23/4 * * *",wake-system=1,timeout=3600,script-path=jd_dreamFactory.js
 
 ============小火箭=========
-京喜工厂 = type=cron,script-path=jd_dreamFactory.js, cronexpr="10 * * * *", timeout=3600, enable=true
+京喜工厂 = type=cron,script-path=jd_dreamFactory.js, cronexpr="43 0,6-23/4 * * *", timeout=3600, enable=true
 
  */
 // prettier-ignore
