@@ -7,11 +7,17 @@
 ===================quantumultx================
 [task_local]
 #东东健康社区
-13 1,6,22 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_health.js, tag=东东健康社区, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+13 1,6,22 * * * jd_health.js, tag=东东健康社区, enabled=true
 
 =====================Loon================
 [Script]
-cron "13 1,6,22 * * *" script-path=jd_health.js, tag=东东健康社区
+cron "13 1,6,22 * * *" jd_health.js, tag=东东健康社区
+
+====================Surge================
+东东健康社区 = type=cron,cronexp="13 1,6,22 * * *",wake-system=1,timeout=3600,jd_health.js
+
+============小火箭=========
+东东健康社区 = type=cron,jd_health.js, cronexpr="13 1,6,22 * * *", timeout=3600, enable=true
  */
 const $ = new Env("东东健康社区");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
@@ -20,7 +26,7 @@ let cookiesArr = [], cookie = "", allMessage = "", message;
 let reward = process.env.JD_HEALTH_REWARD_NAME ? process.env.JD_HEALTH_REWARD_NAME : ''
 const randomCount = $.isNode() ? 20 : 5;
 //euper
-$.newShareCodes = ['T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA', 'T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA', 'T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA', 'T0084qAiHhYeCjVfnoaW5kRrbA', 'T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA', 'T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA'];
+$.newShareCodes = ['T024uvh2SRkQ9VHXPRvwlv8NcNb9CjVfnoaW5kRrbA', 'T0205KkcIkxckBO_WGiKyo1oCjVfnoaW5kRrbA', 'T0225KkcRUgdoVGDc0zyx_ECcgCjVfnoaW5kRrbA', 'T0084qAiHhYeCjVfnoaW5kRrbA', 'T0205KkcAkVQqSKGVWOv0oV2CjVfnoaW5kRrbA', 'T0225KkcR08R8QCCIhrxkPRfJgCjVfnoaW5kRrbA', 'T0225KkcR0wZ9AbVKEulkfZZcQCjVfnoaW5kRrbA'];
 let UserShareCodes = "";
 function oc(fn, defaultVal) { //optioanl chaining
 	try {
@@ -56,7 +62,6 @@ const JD_API_HOST = "https://api.m.jd.com/";
 			console.log(`\n******开始【京东账号${$.index}】${$.UserName}*********\n`);
 			await main()
 			await showMsg()
-      await $.wait(5600)
 		}
 	}
 	if ($.isNode() && allMessage) {
@@ -84,30 +89,17 @@ async function main() {
       await $.wait(1000 + Math.floor(Math.random() * 500))
     }
     await collectScore()
-    await helpFriends();
     await getTaskDetail(22);
     await getTaskDetail(-1)
 
     if (reward) {
       await getCommodities()
     }
+	await exchanges()
 
   } catch (e) {
     $.logErr(e)
 	}
-}
-
-async function helpFriends() {
-  for (let code of $.newShareCodes) {
-    if (!code) continue;
-    console.log(`去助力好友${code}`);
-    let res = await doTask(code, 6);
-    if ([108, -1001].includes(res?.data?.bizCode)) {
-      console.log(`助力次数已满，跳出`);
-      break;
-    }
-    await $.wait(1000 + Math.floor(Math.random() * 500));
-  }
 }
 
 function showMsg() {
@@ -184,6 +176,29 @@ function getTaskDetail(taskId = '') {
           resolve()
         }
       })
+  })
+}
+
+function exchanges(commodityType, commodityId) {
+  return new Promise(resolve => {
+    const options = taskUrl('jdhealth_doLottery', {"taskId":1})
+    $.post(options, (err, resp, data) => {
+      try {
+        if (safeGet(data)) {
+          data = $.toObj(data)
+          if (data.data.bizCode === 0 || data.data.bizMsg === "success") {
+            $.score = data.data.result.jingBeanNum
+            console.log(`领取${data.data.result.jingBeanNum}京豆成功`)
+          } else {
+            console.log(data.data.bizMsg)
+          }
+        }
+      } catch (e) {
+        console.log(e)
+      } finally {
+        resolve(data)
+      }
+    })
   })
 }
 
