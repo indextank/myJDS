@@ -2,22 +2,29 @@
 汪汪乐园-跑步+组队
 默认翻倍到0.04红包结束,修改请设置变量
 export JD_JOY_PARK_RUN_ASSETS="0.04"
-32 * * * * jd_joy_park_run.ts
-new Env('极速版汪汪赛跑')
+20 0-23/2 * * * jd_joy_park_run.ts
+new Env('极速版汪汪赛跑');
+
 **/
 
-import {get, post, requireConfig, wait} from './TS_USER_AGENTS'
+import {get, post, requireConfig, wait} from './function/TS_USER_AGENTS'
 import {H5ST} from "./function/h5st"
 import {existsSync, readFileSync} from "fs";
 import {getDate} from "date-fns";
 
 let cookie: string = '', res: any = '', UserName: string = ''
-let assets: number = 0.04, captainId: string = '', h5stTool: H5ST = new H5ST('b6ac3', 'jdltapp;', '1804945295425750')
+let assets: number = 0, captainId: string = '', h5stTool: H5ST = new H5ST('b6ac3', 'jdltapp;', '1804945295425750')
 
 !(async () => {
   let cookiesArr: string[] = await requireConfig()
   let account: { pt_pin: string, joy_park_run: number }[] = []
-
+  if (existsSync('./utils/account.json')) {
+    try {
+      account = JSON.parse(readFileSync('./utils/account.json').toString())
+    } catch (e) {
+      console.log('./utils/account.json 加载出错')
+    }
+  }
 
   for (let [index, value] of cookiesArr.entries()) {
     cookie = value
@@ -35,7 +42,7 @@ let assets: number = 0.04, captainId: string = '', h5stTool: H5ST = new H5ST('b6
 
     try {
       res = await team('runningMyPrize', {"linkId": "L-sOanK_5RJCz7I314FpnQ", "pageSize": 20, "time": null, "ids": null})
-      let sum: number = 0
+      let sum: number = 0, rewardAmount: number = res.data.rewardAmount
       for (let t of res.data.detailVos) {
         if (getDate(new Date(t.createTime)) === new Date().getDate()) {
           sum = add(sum, t.amount)
@@ -44,6 +51,18 @@ let assets: number = 0.04, captainId: string = '', h5stTool: H5ST = new H5ST('b6
         }
       }
       console.log('今日收益', sum)
+      if (res.data.runningCashStatus.currentEndTime) {
+        if (res.data.runningCashStatus.status === 0) {
+          console.log('可提现', rewardAmount)
+          res = await api('runningPrizeDraw', {"linkId": "L-sOanK_5RJCz7I314FpnQ", "type": 2})
+          await wait(2000)
+          console.log(res.data.message)
+        } else {
+          console.log('已提现')
+        }
+      } else {
+        console.log('非提现时段')
+      }
 
       await h5stTool.__genAlgo()
       res = await team('runningTeamInfo', {"linkId": "L-sOanK_5RJCz7I314FpnQ"})
