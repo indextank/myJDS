@@ -24,6 +24,13 @@ let PlantBeanShareCodes = [
   'tcu2fa5tmlgnp7kr6656lap2soxi6oepe573m4a@4npkonnsy7xi2z3dkz5zl7dytucijlyfpo3mliq@4vvbjlml6tdfdmupxpjymceethvrrhccs3kd2ui@7qol36k2wexalexopbwitsnlk7dlfaq6w3g7ooa@cshk5bfjifz75j3sxlqcin52ywcqgxgmvmx65by@4npkonnsy7xi3d4xvosob5nmahtyxbucl5didci@bmiqsfq6pjgaux6emvmykdxamy@bmiqsfq6pjgaux6emvmykdxamy',
   'tcu2fa5tmlgnp7kr6656lap2soxi6oepe573m4a@4npkonnsy7xi2z3dkz5zl7dytucijlyfpo3mliq@4vvbjlml6tdfdmupxpjymceethvrrhccs3kd2ui@7qol36k2wexalexopbwitsnlk7dlfaq6w3g7ooa@cshk5bfjifz75j3sxlqcin52ywcqgxgmvmx65by@4npkonnsy7xi3d4xvosob5nmahtyxbucl5didci@bmiqsfq6pjgaux6emvmykdxamy@bmiqsfq6pjgaux6emvmykdxamy'
 ]
+
+// 从日志获取互助码
+// const logShareCodes = require('./utils/jdShareCodes');
+// if (logShareCodes.PLANT_BEAN_SHARECODES.length > 0 && !process.env.PLANT_BEAN_SHARECODES) {
+//   process.env.PLANT_BEAN_SHARECODES = logShareCodes.PLANT_BEAN_SHARECODES.join('&');
+// }
+
 // 判断github action里面是否有种豆得豆互助码
 if (process.env.PLANT_BEAN_SHARECODES) {
   if (process.env.PLANT_BEAN_SHARECODES.indexOf('&') > -1) {
@@ -35,8 +42,8 @@ if (process.env.PLANT_BEAN_SHARECODES) {
   } else {
     PlantBeanShareCodes = process.env.PLANT_BEAN_SHARECODES.split();
   }
-} else if (process.env.JD_COOKIE) {
-  console.log(`您secret里面未提供助力码，优先进行自己账号内互助，然后再给脚本内置的码进行助力，请知晓！`)
+} else {
+  console.log(`由于您环境变量(PLANT_BEAN_SHARECODES)里面未提供助力码，故此处运行将会给脚本内置的码进行助力，请知晓！`)
 }
 for (let i = 0; i < PlantBeanShareCodes.length; i++) {
   const index = (i + 1 === 1) ? '' : (i + 1);

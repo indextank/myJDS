@@ -46,8 +46,9 @@ let newShareCodes = [ // IOS本地脚本用户这个列表填入你要助力的�
   'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTEyNjE4NjQ2MDAwMDAwMDY1NTM0OTMz',
   'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTEyNjE4NjQ2MDAwMDAwMDY1NTM0OTMz',
   'MTAxODc2NTEzOTAwMDAwMDAyMjUyNjQ5Nw==@MTE1NDAxNzYwMDAwMDAwMzg2Njk3MzU=@MTAxODc2NTEzOTAwMDAwMDAyMTgwOTY2OQ==@MTE1NDY3NTIwMDAwMDAwNTQyNDQwNjc=@MTE1NDAxNzcwMDAwMDAwMzg2Njk1OTc=@MTEyMTY4MjgwMDAwMDAwNDk2NDc0MjU=@MTEyNjE4NjQ2MDAwMDAwMDY1NTM0OTMz'
-]
+];
 let NoNeedCodes = [];
+let lnrun = 0;
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         if (jdCookieNode[item]) {
@@ -93,8 +94,13 @@ console.log(`共${cookiesArr.length}个京东账号\n`);
             goodsUrl = '';
             taskInfoKey = [];
             option = {};
-            await jdPet();
-			await $.wait(30 * 1000);
+            lnrun++;
+			await jdPet();
+			if (lnrun == 3) {
+              console.log(`\n【访问接口次数达到3次，休息一分钟.....】\n`);
+              await $.wait(60 * 1000);
+              lnrun = 0;
+			}
         }
     }
     if ($.isNode() && allMessage && $.ctrTemp) {
@@ -157,7 +163,7 @@ async function jdPet() {
             await doTask(); //做日常任务
             await feedPetsAgain(); //再次投食
             await energyCollect(); //收集好感度
-            await showMsg();
+            //await showMsg();
             
         } else if (initPetTownRes.code === '0') {
             console.log(`初始化萌宠失败:  ${initPetTownRes.message}`);
@@ -191,7 +197,8 @@ async function feedPetsAgain() {
         if (foodAmount - 100 >= 10) {
             for (let i = 0; i < parseInt((foodAmount - 100) / 10); i++) {
                 const feedPetRes = await request('feedPets');
-                console.log(`投食feedPetRes`);
+				await $.wait(5 * 1000);
+				console.log(`投食feedPetRes`);
                 if (feedPetRes.resultCode == 0 && feedPetRes.code == 0) {
                     console.log('投食成功')
                 }
@@ -264,7 +271,13 @@ async function doTask() {
     }
     // 投食10次
     if (feedReachInit && !feedReachInit.finished) {
-        await feedReachInitFun();
+        lnrun++;
+		await feedReachInitFun();
+		if (lnrun == 5) {
+            console.log(`\n【访问接口次数达到5次，休息半分钟.....】\n`);
+            await $.wait(30 * 1000);
+			lnrun = 0;
+		}
     }
 }
 // 好友助力信息
@@ -426,10 +439,11 @@ async function feedReachInitFun() {
     console.log('投食任务开始...');
     let finishedTimes = $.taskInfo.feedReachInit.hadFeedAmount / 10; //已经喂养了几次
     let needFeedTimes = 10 - finishedTimes; //还需要几次
-    let tryTimes = 20; //尝试次数
+    let tryTimes = 10; //尝试次数
     do {
         console.log(`还需要投食${needFeedTimes}次`);
         const response = await request('feedPets');
+		await $.wait(5 * 1000);
         console.log(`本次投食结果: ${JSON.stringify(response)}`);
         if (response.resultCode == 0 && response.code == 0) {
             needFeedTimes--;
@@ -506,7 +520,7 @@ function TotalBean() {
 }
 // 请求
 async function request(function_id, body = {}) {
-    await $.wait(3000); //歇口气儿, 不然会报操作频繁
+    await $.wait(5 * 1000); //歇口气儿, 不然会报操作频繁
     return new Promise((resolve, reject) => {
         $.post(taskUrl(function_id, body), (err, resp, data) => {
             try {
