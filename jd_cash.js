@@ -9,7 +9,7 @@ PandaToken 请前往 https://t.me/pang_da_bot  获取Token
 ============Quantumultx===============
 [task_local]
 #签到领现金
-11 1,20 * * * jd_cash.js, tag=签到领现金, enabled=true
+11 1,20 * * * jd_cash.js, tag=签到领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
