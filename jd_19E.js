@@ -111,16 +111,16 @@ $.shareCodesArr = [];
                                     if (tmp[o].status == 1) {
                                         conti = true
                                         await promote_collectScore(tmp[o].taskToken, task.taskId)
-                                        await $.wait(1000)
+                                        await $.wait(2500)
                                     }
 
                                 }
-                                await $.wait(8000)
+                                await $.wait(10000)
                                 for (var o = 0; o < tmp.length; o++) {
                                     if (tmp[o].status == 1) {
                                         conti = true
                                         await qryViewkitCallbackResult(tmp[o].taskToken)
-                                        await $.wait(1000)
+                                        await $.wait(3000)
                                     }
 
                                 }
@@ -132,7 +132,7 @@ $.shareCodesArr = [];
                                     if (r.productInfoVos[o].status == 1) {
                                         conti = true
                                         await promote_collectScore(r.productInfoVos[o].taskToken, task.taskId)
-                                        await $.wait(1000)
+                                        await $.wait(3000)
                                         t++
                                         if (t >= 5) break
                                     }
@@ -146,7 +146,7 @@ $.shareCodesArr = [];
                                     if (r.browseShopVo[o].status == 1) {
                                         conti = true
                                         await promote_collectScore(r.browseShopVo[o].taskToken, task.taskId)
-                                        await $.wait(1000)
+                                        await $.wait(3000)
                                         t++
                                         if (t >= 5) break
                                     }
@@ -174,7 +174,7 @@ $.shareCodesArr = [];
                 await promote_sign()
                 do {
                     var ret = await promote_raise()
-                    await $.wait(1000)
+                    await $.wait(3000)
                 } while (ret)
                 console.log(`\n\n助力码：${res.inviteId}\n`)
                 $.newShareCodes.push(res.inviteId)
@@ -601,7 +601,7 @@ function taskPostUrl2(functionId, body) {
 
 
 function getUA() {
-    $.UA = `jdapp;android;10.0.6;11;9363537336739353-2636733333439346;network/wifi;model/KB2000;addressid/138121554;aid/9657c795bc73349d;oaid/;osVer/30;appBuild/88852;partner/oppo;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 11; KB2000 Build/RP1A.201005.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045537 Mobile Safari/537.36`
+    $.UA = `jdapp;android;10.0.2;11;network/wifi;Mozilla/5.0 (Linux; Android 11; Redmi K20 Pro Premium Edition Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045513 Mobile Safari/537.36`
 }
 
 function randomString(e) {
