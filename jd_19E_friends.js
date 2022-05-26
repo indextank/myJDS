@@ -1,17 +1,15 @@
-
-/*
-手动先进活动做完引导，入口，首页有测漂浮
-10 0,6-23/2 * * * jd_19E.js
-不完善，凑合跑，估计很快凉。。
-
-*/
-
-// if (process.env.DY_19E != "true") {
-//     console.log('\n默认不运行，运行前最好手动进任务做完新手引导,设置变量export DY_19E="true"来运行\n')
+// if (process.env.JD_19E != "true") {
+//     console.log('\n默认不运行,安全性自行衡量,设置变量export JD_19E="true"来运行\n')
 //     return
 // }
+/*
+建议手动先点开一次
+1 8,15 * * * jd_19E_friends.js
+快速助力、加入队伍、升级，跑一次即可
+*/
 
-const $ = new Env('热爱奇旅分19亿');
+
+const $ = new Env('热爱奇旅助力组队升级');
 
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
@@ -19,7 +17,7 @@ let cookiesArr = [],
     cookie = '';
 let secretp = '',
     inviteId = []
-let conti = false
+
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
@@ -37,7 +35,7 @@ let groups = []
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    console.log('\n开始异常了，快凉了\n')
+    console.log('\n仅助力+组队+升级，快速跑完\n')
     await getUA()
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
@@ -51,9 +49,13 @@ let groups = []
             //   await shareCodesFormat()
             $.newShareCodes = []
 			await get_secretp()
-            await promote_collectAtuoScore()
+			if ($.huobao == false) {
+			console.log(`火爆`); continue;
+			}
+            await promote_collectAtuoScore() //定时领取
             let res
-            if (i % 30 == 0 ){
+			//此处修改组队人数 默认前7组队
+            if (i <= 7 ){
                res = await promote_pk_getHomeData()
                if (res.data.result.groupInfo.memberList) {
                  let memberCount = res.data.result.groupInfo.memberList.length
@@ -68,112 +70,13 @@ let groups = []
                  }
                }
             }
-            try {
-                do {
-                    
-                    res = await promote_getTaskDetail()
-                    for (var p = 0; p < res.lotteryTaskVos[0].badgeAwardVos.length; p++) {
-                        if (res.lotteryTaskVos[0].badgeAwardVos[p].status == 3) {
-                            await promote_getBadgeAward(res.lotteryTaskVos[0].badgeAwardVos[p].awardToken)
-                        }
-                    }
-                    let task = []
-                    let r = []
-                    for (var p = 0; p < res.taskVos.length; p++) {
-                        task = res.taskVos[p]
-                        if (task.status != 1 && !task.simpleRecordInfoVo) continue
-                        switch (task.taskType) {
-                            case 7:
-                            case 9:
-                            case 3:
-                            case 6:
-                            case 26:
-                                var tmp = []
-                                if (task.taskType == 7) {
-                                    tmp = task.browseShopVo
-                                } else {
-                                    tmp = task.shoppingActivityVos
-                                }
-
-                                for (var o = 0; o < tmp.length; o++) {
-                                    console.log(`\n\n ${tmp[o].title?tmp[o].title:tmp[o].shopName}`)
-                                    if (tmp[o].status == 1) {
-                                        conti = true
-                                        await promote_collectScore(tmp[o].taskToken, task.taskId)
-                                        await $.wait(1000)
-                                    }
-
-                                }
-                                await $.wait(8000)
-                                for (var o = 0; o < tmp.length; o++) {
-                                    if (tmp[o].status == 1 && task.taskType !== 3 && task.taskType !== 26  ) {
-                                        conti = true
-                                        await qryViewkitCallbackResult(tmp[o].taskToken)
-                                        await $.wait(1000)
-                                    }
-
-                                }
-                                break
-                            case 2:
-                                r = await promote_getFeedDetail(task.taskId)
-                                var t = 0;
-                                for (var o = 0; o < r.productInfoVos.length; o++) {
-                                    if (r.productInfoVos[o].status == 1) {
-                                        conti = true
-                                        await promote_collectScore(r.productInfoVos[o].taskToken, task.taskId)
-                                        await $.wait(1000)
-                                        t++
-                                        if (t >= 5) break
-                                    }
-
-                                }
-                                break
-                            case 5:
-                                r = await promote_getFeedDetail2(task.taskId)
-                                var t = 0;
-                                for (var o = 0; o < r.browseShopVo.length; o++) {
-                                    if (r.browseShopVo[o].status == 1) {
-                                        conti = true
-                                        await promote_collectScore(r.browseShopVo[o].taskToken, task.taskId)
-                                        await $.wait(1000)
-                                        t++
-                                        if (t >= 5) break
-                                    }
-
-                                }
-                                break
-                            case 210:
-                                for (var o = 0; o < task.brandMemberVos.length; o++) {
-                                    if (task.brandMemberVos[o].status == 1) {
-                                        //console.log(`\n\n ${task.brandMemberVos[o].title}`)
-                                        //memberUrl = task.brandMemberVos[o].memberUrl
-                                        //memberUrl = transform(memberUrl)
-                                        //await join(task.brandMemberVos[o].vendorIds, memberUrl.channel, memberUrl.shopId ? memberUrl.shopId : "")
-                                        //await promote_collectScore(task.brandMemberVos[o].taskToken, task.taskId)
-                                    }
-
-                                }
-                                break
-                            case 0:
-                                    tmp = task.simpleRecordInfoVo
-                                    if (task.status == 1 && task.taskName !== '去组队分大奖' || task.status !== 1 ) {
-                                        conti = true
-                                        await promote_collectScore(tmp.taskToken, task.taskId)
-                                        await $.wait(1000)
-                                    }
-                        }
-
-                    }
-                    await $.wait(1000)
-                } while (conti)
-
+			try {
+				res = await promote_getTaskDetail()
                 await promote_sign()
-                do {
+				do {
                     var ret = await promote_raise()
                     await $.wait(1000)
                 } while (ret)
-                console.log(`\n\n助力码：${res.inviteId}\n`)
-                inviteId.push(res.inviteId)
             } catch (e) {
                 $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
             }
@@ -190,9 +93,12 @@ let groups = []
                  message = '';
                  console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);  
                  await get_secretp() 
+				if ($.huobao == false) {
+				console.log(`火爆`); continue;
+				}
                  await $.wait(1000)
                  let res
-                 for (let s = 0; s < inviteId.length; s++) {
+				 for (let s = 0; s < inviteId.length; s++) {
                      console.log(`\n开始助力 【${inviteId[s]}】`)
                      res = await help(inviteId[s])
                      if ( res['data']['bizCode'] === 0) {
@@ -205,7 +111,7 @@ let groups = []
                     else {console.log(res.data.bizMsg)}
                      await $.wait(1000)
                  }  
-		     
+
                  res = await promote_pk_getHomeData()
                  if (res.data.result.groupInfo.memberList) {
                    let memberCount = res.data.result.groupInfo.memberList.length
@@ -262,15 +168,14 @@ function get_secretp() {
                 } else {
                     if (safeGet(data)) {
                         data = JSON.parse(data);
+						$.huobao = data.data.success
                         if (data.code == 0) {
                             if (data.data && data.data.bizCode === 0) {
                                 secretp = data.data.result.homeMainInfo.secretp
-                               // console.log(secretp)
+								
                           }
-                        } else 
-                        if (data.code != 0) {
-                            //console.log(`\n\nsecretp失败:${JSON.stringify(data)}\n`)
-                        }
+                        } 
+						
                     }
                 }
             } catch (e) {
@@ -296,48 +201,13 @@ function promote_sign() {
                         if (data.code === 0) {
                             if (data.data && data['data']['bizCode'] === 0) {
 
-                                console.log(`\n\n 签到成功`)
+                                console.log(`签到成功`)
                                 resolve(true)
                             } else {
                                 resolve(false)
                             }
                         } else {
-                            console.log(`\n\n签到失败:${JSON.stringify(data)}\n`)
-                            resolve(false)
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve(data);
-            }
-        })
-    })
-}
-
-function promote_raise() {
-    let s = Math.floor((Math.random()*3)) +1
-    let body = {"scenceId":s, "ss": { "extraData": { "log": "", "sceneid": "RAhomePageh5" }, "secretp": secretp, "random": randomString(6) } };
-    return new Promise((resolve) => {
-        $.post(taskPostUrl("promote_raise", body), async(err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    if (safeGet(data)) {
-                        data = JSON.parse(data);
-                        if (data.code === 0) {
-                            if (data.data && data['data']['bizCode'] === 0) {
-
-                                console.log(`\n\n 升级成功`)
-                                resolve(true)
-                            } else {
-                                resolve(false)
-                            }
-                        } else {
-                            console.log(`\n\n升级失败:${JSON.stringify(data)}\n`)
+                            console.log(`签到失败:${JSON.stringify(data)}\n`)
                             resolve(false)
                         }
                     }
@@ -366,7 +236,7 @@ function promote_collectAtuoScore() {
                             if (data.data && data['data']['bizCode'] === 0) {
 
                                 console.log(`成功领取${data.data.result.produceScore}个币`)
-                            }else{console.log(data.data.bizMsg)}
+                            }
                         } else {
                             //console.log(`\n\nsecretp失败:${JSON.stringify(data)}\n`)
                         }
@@ -394,11 +264,13 @@ function promote_getTaskDetail() {
                         data = JSON.parse(data);
                         if (data.code === 0) {
                             if (data.data && data['data']['bizCode'] === 0) {
-                                if (data.data.result.inviteId == null) {
+								inviteIdss = data.data.result.inviteId
+								if (!inviteIdss) {
                                     console.log("黑号")
                                     resolve("")
                                 }
-                                //inviteId.push(data.data.result.inviteId)
+								console.log(inviteIdss)
+                                inviteId.push(data.data.result.inviteId)
                                 resolve(data.data.result)
                             }
                         } else {
@@ -414,7 +286,6 @@ function promote_getTaskDetail() {
         })
     })
 }
-
 function promote_collectScore(taskToken, taskId) {
     let body = { "taskId": taskId, "taskToken": taskToken, "actionType": 1, "ss": { "extraData": { "log": "", "sceneid": "RAhomePageh5" }, "secretp": secretp, "random": randomString(6) } };
 
@@ -430,7 +301,7 @@ function promote_collectScore(taskToken, taskId) {
                         if (data.code === 0) {
                             if (data.data && data['data']['bizCode'] === 0) {
                                 console.log(data.msg)
-                            }else{console.log(data.data.bizMsg);conti=false}
+                            }
                         } else {
                             console.log(`\n 失败:${JSON.stringify(data)}\n`)
                         }
@@ -474,40 +345,11 @@ function help(inviteId) {
         })
     })
 }
-
-function qryViewkitCallbackResult(taskToken) {
-    let body = { "dataSource": "newshortAward", "method": "getTaskAward", "reqParams": `{\"taskToken\":"${taskToken}"}`, "sdkVersion": "1.0.0", "clientLanguage": "zh", "onlyTimeId": new Date().getTime(), "riskParam": { "platform": "3", "orgType": "2", "openId": "-1", "pageClickKey": "Babel_VKCoupon", "eid": "", "fp": "-1", "shshshfp": "", "shshshfpa": "", "shshshfpb": "", "childActivityUrl": "", "userArea": "-1", "client": "", "clientVersion": "", "uuid": "", "osVersion": "", "brand": "", "model": "", "networkType": "", "jda": "-1" } };
-
+function promote_raise() {
+    let s = Math.floor((Math.random()*3)) +1
+    let body = {"scenceId":s, "ss": { "extraData": { "log": "", "sceneid": "RAhomePageh5" }, "secretp": secretp, "random": randomString(6) } };
     return new Promise((resolve) => {
-        $.post(taskPostUrl2("qryViewkitCallbackResult", body), async(err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    if (safeGet(data)) {
-                        if (data.indexOf("已完成") != -1) {
-                            data = JSON.parse(data);
-                            console.log(`\n\n ${data.toast.subTitle}`)
-                        } else {
-                            console.log(`\n\n失败:${JSON.stringify(data)}\n`)
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve(data);
-            }
-        })
-    })
-}
-
-function promote_getBadgeAward(taskToken) {
-    let body = { "awardToken": taskToken };
-
-    return new Promise((resolve) => {
-        $.post(taskPostUrl("promote_getBadgeAward", body), async(err, resp, data) => {
+        $.post(taskPostUrl("promote_raise", body), async(err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -517,118 +359,15 @@ function promote_getBadgeAward(taskToken) {
                         data = JSON.parse(data);
                         if (data.code === 0) {
                             if (data.data && data['data']['bizCode'] === 0) {
-                                for (let i = 0; i < data.data.result.myAwardVos.length; i++) {
-                                    switch (data.data.result.myAwardVos[i].type) {
-                                        case 15:
-                                            console.log(`\n\n 获得${data.data.result.myAwardVos[i].pointVo.score}币`)
-                                            break
-                                        case 1:
-                                            //console.log(`\n\n 获得优惠券 满${data.result.myAwardVos[1].couponVo.usageThreshold}-${data.result.myAwardVos[i].couponVo.quota}  ${data.result.myAwardVos[i].couponVo.useRange}`)
-                                            break
-                                    }
-                                }
+
+                                console.log(`升级成功`)
+                                resolve(true)
+                            } else {
+                                resolve(false)
                             }
                         } else {
-                            console.log(`\n\n 失败:${JSON.stringify(data)}\n`)
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve(data);
-            }
-        })
-    })
-}
-
-function promote_getFeedDetail(taskId) {
-    let body = { "taskId": taskId.toString() };
-
-    return new Promise((resolve) => {
-        $.post(taskPostUrl("promote_getFeedDetail", body), async(err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    if (safeGet(data)) {
-                        data = JSON.parse(data);
-                        if (data.code === 0) {
-                            if (data.data && data['data']['bizCode'] === 0) {
-                                resolve(data.data.result.addProductVos[0])
-                            }
-                        } else {
-                            console.log(`\n\n 失败:${JSON.stringify(data)}\n`)
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve(data);
-            }
-        })
-    })
-}
-
-function promote_getFeedDetail2(taskId) {
-    let body = { "taskId": taskId.toString() };
-
-    return new Promise((resolve) => {
-        $.post(taskPostUrl("promote_getFeedDetail", body), async(err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    if (safeGet(data)) {
-                        data = JSON.parse(data);
-                        if (data.code === 0) {
-                            if (data.data && data['data']['bizCode'] === 0) {
-                                resolve(data.data.result.taskVos[0])
-                            }
-                        } else {
-                            console.log(`\n\n 失败:${JSON.stringify(data)}\n`)
-                        }
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve(data);
-            }
-        })
-    })
-}
-
-function join(venderId, channel, shopId) {
-    let shopId_ = shopId != "" ? `,"shopId":"${shopId}"` : ""
-    return new Promise((resolve) => {
-        $.get({
-            url: `https://api.m.jd.com/client.action?appid=jd_shop_member&functionId=bindWithVender&body={"venderId":"${venderId}"${shopId_},"bindByVerifyCodeFlag":1,"registerExtend":{},"writeChildFlag":0,"channel":${channel}}&client=H5&clientVersion=9.2.0&uuid=88888`,
-            headers: {
-                'Content-Type': 'text/plain; Charset=UTF-8',
-                'Cookie': cookie,
-                'Host': 'api.m.jd.com',
-                'Connection': 'keep-alive',
-                'Content-Type': 'application/x-www-form-urlencoded',
-                "User-Agent": $.UA,
-                'Accept-Language': 'zh-cn',
-                'Referer': `https://shopmember.m.jd.com/shopcard/?venderId=${venderId}&shopId=${venderId}&venderType=5&channel=401&returnUrl=https://lzdz1-isv.isvjcloud.com/dingzhi/personal/care/activity/4540555?activityId=dz210768869313`,
-                'Accept-Encoding': 'gzip, deflate, br'
-            }
-        }, async(err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    if (safeGet(data)) {
-                        if (data.indexOf("成功") != -1) {
-                            console.log(`\n\n 入会成功\n`)
-                        } else {
-                            console.log(`\n\n 失败:${JSON.stringify(data)}\n`)
+                            console.log(`升级失败:${JSON.stringify(data)}\n`)
+                            resolve(false)
                         }
                     }
                 }
