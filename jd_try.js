@@ -16,7 +16,7 @@ export JD_TRY_APPLYNUMFILTER="100000" #过滤大于设定值的已申请人数
 export JD_TRY_MINSUPPLYNUM="1" #最小提供数量
 export JD_TRY_SENDNUM="10" #每隔多少账号发送一次通知，不需要可以不用设置
 export JD_TRY_UNIFIED="false" 默认采用不同试用组
-cron "4 1-22/8 * * *" jd_try.js, tag:京东试用
+cron "4 14 *\/4 * *" jd_try.js, tag:京东试用
 
  */
 const $ = new Env('京东试用')
@@ -132,7 +132,7 @@ let args_xh = {
      * 过滤大于设定值的已申请人数，例如下面设置的1000，A商品已经有1001人申请了，则A商品不会进行申请，会被跳过
      * 可设置环境变量：JD_TRY_APPLYNUMFILTER
      * */
-    applyNumFilter: process.env.JD_TRY_APPLYNUMFILTER * 1 || 100000,
+    applyNumFilter: process.env.JD_TRY_APPLYNUMFILTER * 1 || 300000,
     /*
      * 商品试用之间和获取商品之间的间隔, 单位：毫秒(1秒=1000毫秒)
      * 可设置环境变量：JD_TRY_APPLYINTERVAL
