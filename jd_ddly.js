@@ -85,7 +85,6 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                     await browseAward(task.topResource.task.advertId, index, task.type)
                 }
             }
-            console.log(`\n集勋章得好礼  By：【zero205】`)
             console.log(`\n由于我自己写这个脚本的时候已经手动开启活动了\n所以不知道开启活动的代码\n没有开启的手动开启吧，活动入口：东东农场->水车\n`)
             await collect()
         }
@@ -111,7 +110,8 @@ function browseAward(id, index, type) {
                     console.log(`${$.name} API请求失败，请检查网路重试`);
                 } else {
                     data = JSON.parse(data);
-                    //    console.log(data)
+                    console.log("--------- debug -----------")
+                    console.log(data)
                     if (data.result) {
                         console.log("领取奖励成功,获得💧" + data.result.waterEnergy)
                     } else {
