@@ -17,7 +17,8 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
-let InviterPin = '';
+// euper
+let InviterPin = ['ob5uluTqqxkim0Mz5lIK1w==', 'F7o+2zi5L+gQIWuMgmnTBRosMAxTWqRP8DMXr9e39pM=', 'i7My3ErIYoVy2fjiHNhoeg==', 'OQ+S7/wCR4DRCtWr99wWGw==', 'BOOWzXEQuXFwLXyL4O4Yhg==', 'rTHoRtgQyTUSAa/ZIGgad/rjiNMKC4khK+NwHzL4bA0=', 'N5sXHbGLgXflqADjaEVA5gmTtt2WMvSoxj2dlWMjlTs=', '9XsAAYEM7B08yJG9ghz6kZ6ujj/5OEjycOnQoD8cK30=', 'EdbcZVtSwNHeRHKiY0GE7A==', '9772OiscsASoTYEmpHRTMMEfq0/qXaNplq8w9CXwhJA=', 'Hphew2BEelJCfXPkgIo6UuvqirQGt99jXMQAxYJQgmA=', 'Kes3Gulo090COpiQkJP5iw=='];
 
 if ($.isNode() && process.env.InviterPin) {
   InviterPin = process.env.InviterPin;
@@ -61,9 +62,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
       }
       await info()
       if (InviterPin.length != 0) {
-        await help()
-      } else {
-        await help2("zjb",Math.random() > 0.5 ? "9vOskAagcMJ4EOWXPQSS9A%3D%3D" : "9irilvenEupYF488TUrl19DLuKQ9zWnXYHf9anC0ujw%3D")        
+        await help()  
       }
     }
   }
@@ -124,35 +123,6 @@ function help() {
         const reust = JSON.parse(data)
         if (reust.code == 0) {
           $.log(`即将开始邀请：${InviterPin}\n邀请获得金币: ` + reust.data.coinReward * 0.1 + "金币")
-        } else
-          console.log(reust.message)
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
-  });
-}
-
-function help2(name,code) {
-  return new Promise(async (resolve) => {
-    let options = {
-      url: `https://api.m.jd.com`,
-      body: `functionId=TaskInviteService&body={"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":"${code}","type":1}}&appid=market-task-h5&uuid=7303439343432346-7356431353233311&eu=7303439343432341&fv=7356431353233321&_t=1623475839367`,
-      headers: {
-        "Origin": "https://assignment.jd.com",
-        "Host": "api.m.jd.com",
-        "User-Agent": "jdltapp;android;3.5.0;10;7303439343432346-7356431353233323;network/wifi;model/PCAM00;addressid/4228801336;aid/7049442d7e415232;oaid/;osVer/29;appBuild/1587;psn/jkWXTyfQA2PDVmg3OkxOiWnHy7pHXWA |155;psq/12;adk/;ads/;pap/JA2020_3112531|3.5.0|ANDROID 10;osv/10;pv/36.36;jdv/;ref/com.jd.jdlite.lib.mission.allowance.AllowanceFragment;partner/oppo;apprpd/Allowance_Registered;eufv/1;Mozilla/5.0 (Linux; Android 10; PCAM00 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/045140 Mobile Safari/537.36",
-        "Cookie": cookie,
-      }
-    }
-    //console.log(options['body'])
-    $.post(options, async (err, resp, data) => {
-      try {
-        const reust = JSON.parse(data)
-        if (reust.code === 0) {
-          $.log(`赚金币助力【${name}】成功，感谢！`)
         } else
           console.log(reust.message)
       } catch (e) {
