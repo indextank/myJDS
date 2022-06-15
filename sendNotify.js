@@ -110,9 +110,9 @@ let PUSH_PLUS_USER_hxtrip = '';
 // WP_TOPICIDS 群发, 发送目标的 topicId, 以 ; 分隔! 使用 WP_UIDS 单发的时候, 可以不传
 // WP_UIDS 发送目标的 uid, 以 ; 分隔。注意 WP_UIDS 和 WP_TOPICIDS 可以同时填写, 也可以只填写一个。
 // WP_URL 原文链接, 可选参数
-let WP_APP_TOKEN = "AT_WzmNo6r4QevG8u9Mddxbsm9mioKd6Sov";
+let WP_APP_TOKEN = "";
 let WP_TOPICIDS = "";
-let WP_UIDS = "UID_NDGCq1mcFU1WidZPlBeWWlXPMMM2";
+let WP_UIDS = "";
 let WP_URL = "";
 
 let WP_APP_TOKEN_ONE = "";
