@@ -3,14 +3,14 @@
 ============Quantumultx===============
 [task_local]
 #店铺签到
-15 2,14 * * * jd_shop_sign.js, tag=店铺签到, enabled=true
+15 2,14 * * * https://raw.githubusercontent.com/KingRan/KR/main/jd_shop_sign.js, tag=店铺签到, enabled=true
 ===========Loon============
 [Script]
-cron "15 2,14 * * *" jd_shop_sign.js,tag=店铺签到
+cron "15 2,14 * * *" script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_shop_sign.js,tag=店铺签到
 ============Surge=============
-店铺签到 = type=cron,cronexp="15 2,14 * * *",wake-system=1,timeout=3600,jd_shop_sign.js
+店铺签到 = type=cron,cronexp="15 2,14 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_shop_sign.js
 ===========小火箭========
-店铺签到 = type=cron,jd_shop_sign.jss, cronexpr="15 2,14 * * *", timeout=3600, enable=true
+店铺签到 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_shop_sign.jss, cronexpr="15 2,14 * * *", timeout=3600, enable=true
 */
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -25,26 +25,34 @@ let vender=''
 let num=0
 let shopname=''
 const token = [
-  "D54444DD31EDE4874E9AD700B76427A3",
-  "065F571B5F4A0ADC8B8EC592EEB59F93",
-  "B15846FF6A6380A633BD9534717B401B",
-  "9690A770BC8C39BD59ACBD92A958E94B",
-  "9D1D95A028B3DB5F3635FE9134152084",
-  "4A748EF63B85D9CB06B13E7CA2524ABD",
-  "F7BA67EAF9BBBE4D27D3C333580562F4",
-  "1C963AA3BBBD0396784BD0CA527BCDF8",
-  "9DCB43BF4CEFD54BBCE2E58BAEA4E2F6",
-  "5CF1A3455369BDB3D1153D9FC974CAFA",
-  "E29627AF30D59CF7FE7B01C63BD9A975",
-  "3C4C874B25439D70DB4176CEF5785B98",
-  "FCA20BDEA1AE7A2AE5BA6EA88C873906",
-  "9AC30B59DD4E97D88E20236BBB41DBF9",
-	"3B864BF96848A44E170A26D2791E0AE3",
-	"771853736DBD25D6DCDC295E6A5EAB16",
-	"46D8CB32794AB8EA1F42E83360918961",
-	"3C4C874B25439D70DB4176CEF5785B98",
-	"E98E1FF1672C68A2C89F941056EAFFFC",
-	"F7BA67EAF9BBBE4D27D3C333580562F4"
+  "374951B8D50E5D4E01E40153413F00E9",
+  "44C33E9D3144110A9FEE634A4888D31B",
+  "3949F55A02AA8A345409AFD9821C861F",
+  "C387DE3A3F4381FB3E451F0C40069FE6",
+  "05451231AF1DE95AC10FC3A56C3F8A73",
+  "A92269DC92DDD73CC5EB38B3BACF51E3",
+  "62CED31ECD51A5D51A2BBB9FB793393A",
+	"2ED2F283E4640130BA5128E8BBDC3DDA",
+	"1DD46671387EAC6FDC14B753E01D5E30",
+	"BD0D2682B13A75E0AAF7D8E78844F07C",
+	"662E62C629FB6B20CED938E41A0DC026",
+	"F573A078062F9F18BFCC39080864D7F5",
+  "D7DCB5D6D847EB0167C2B0A180B95F68",
+	"D9831E95344C483C6B6B7D8FB314E0D7",
+	"582EA3EA048A3D49961766498A136F9C",
+	"2B9B07D1D14E821744F7BA63F94CD6F2",
+	"67D2D5824D043A5C2EA9C53B900B932C",
+	"43FE9201AB1206649B74BE1487A4BB3C",
+	"833CE1B5158A097598C07D4B2B5B314E",
+	"37D0FAA99892A9E613A1B46E5A55973B",
+	"205E1E703925C48276C0DEBF16C6CBAD",
+	"D35923E942C11178C38BD29E783695B8",
+	"921478C146E5C60F2444E3978AC8E94F",
+	"F327D3978F47808803FD532F19BE3696",
+	"DCD4903E0278DBA70A302612F411876F",
+	"DB872465EDEB653BB501819F9B9DD326",
+	"D4BE8025929E6D662FBCB9F946BF4215",
+	"BC28601FD2C5B9A5D50038825C842358"
 ]
 
 if ($.isNode()) {
@@ -75,7 +83,7 @@ if ($.isNode()) {
       $.isLogin = true;
       $.nickName = '';
       message = '';
-      await TotalBean();
+      //await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
