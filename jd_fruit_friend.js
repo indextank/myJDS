@@ -10,16 +10,16 @@
 ==========================Quantumultx=========================
 [task_local]
 #jd免费水果
-10 10 * * * jd_fruit_friend.js, tag=东东农场好友删减奖励, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
+10 2 * * * jd_fruit_friend.js, tag=东东农场好友删减奖励, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
 =========================Loon=============================
 [Script]
-cron "10 10 * * *" script-path=jd_fruit_friend.js,tag=东东农场好友删减奖励
+cron "10 2 * * *" script-path=jd_fruit_friend.js,tag=东东农场好友删减奖励
 
 =========================Surge============================
-东东农场好友删减奖励 = type=cron,cronexp="10 10 * * *",wake-system=1,timeout=3600,script-path=jd_fruit_friend.js
+东东农场好友删减奖励 = type=cron,cronexp="10 2 * * *",wake-system=1,timeout=3600,script-path=jd_fruit_friend.js
 
 =========================小火箭===========================
-东东农场好友删减奖励 = type=cron,script-path=jd_fruit_friend.js, cronexpr="10 10 * * *", timeout=3600, enable=true
+东东农场好友删减奖励 = type=cron,script-path=jd_fruit_friend.js, cronexpr="10 2 * * *", timeout=3600, enable=true
 
 
 */
@@ -64,7 +64,7 @@ let llgetshare = false;
             $.index = i + 1;
             $.isLogin = true;
             $.nickName = '';
-            await TotalBean();
+            //await TotalBean();
             if (!$.isLogin) {
                 $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
 

@@ -1,13 +1,14 @@
 /**
-汪汪乐园-跑步+组队+提现
+汪汪乐园-跑步+组队
 默认翻倍到0.04红包结束,修改请设置变量
-export JD_JOY_PARK_RUN_ASSETS="0.08"
-11 * * * * jd_joy_park_run.ts
-new Env('极速版汪汪赛跑')
-Modify By Dylan from HW
+export JD_JOY_PARK_RUN_ASSETS="0.04"
+cron:30 0 * * * *
+30 0 * * * * jd_joy_park_run.ts
+new Env('极速版汪汪赛跑');
+
 **/
 
-import {get, post, o2s, requireConfig, wait} from './TS_USER_AGENTS'
+import {get, post, o2s, requireConfig, wait} from './function/TS_USER_AGENTS'
 import {H5ST} from "./function/h5st"
 import {existsSync, readFileSync} from "fs";
 import {getDate} from "date-fns";
@@ -18,6 +19,7 @@ let assets: number = 0, captainId: string = '', h5stTool: H5ST = null
 !(async () => {
   let cookiesArr: string[] = await requireConfig()
   let account: { pt_pin: string, joy_park_run: number }[] = []
+
 
   for (let [index, value] of cookiesArr.entries()) {
     cookie = value
@@ -33,18 +35,6 @@ let assets: number = 0, captainId: string = '', h5stTool: H5ST = null
       await h5stTool.__genAlgo()
       res = await team('runningMyPrize', {"linkId": "L-sOanK_5RJCz7I314FpnQ", "pageSize": 20, "time": null, "ids": null})
       let sum: number = 0, success: number = 0
-      rewardAmount = res.data.rewardAmount
-      if (res.data.runningCashStatus.currentEndTime && res.data.runningCashStatus.status === 0) {
-        console.log('可提现', rewardAmount)
-        res = await api('runningPrizeDraw', {"linkId": "L-sOanK_5RJCz7I314FpnQ", "type": 2})
-        await wait(2000)
-        if (res.success){
-               console.log(res.data.message)
-           } else {
-                console.log('提现失败：', res.errMsg)
-             }
-      }
-
       for (let t of res?.data?.detailVos || []) {
         if (t.amount > 0 && getDate(new Date(t.createTime)) === new Date().getDate()) {
           sum = add(sum, t.amount)
