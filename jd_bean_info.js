@@ -5,7 +5,7 @@
  
 [task_local]
 #京豆详情统计
-20 22 * * * jd_bean_info.js, tag=京豆详情统计, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+20 22 * * * jd_bean_info.js, tag=京豆详情统计, jd.png, enabled=true
  * */
 const $ = new Env('京豆详情统计');
 const notify = $.isNode() ? require('./sendNotify') : '';
