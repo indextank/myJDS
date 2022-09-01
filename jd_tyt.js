@@ -4,7 +4,7 @@
 入口-极速版-推推赚大钱  5元无门槛卷 大概需要50人助力
  [task_local]
 #快速推一推
-0 1 * * * jd_tyt.js, tag=推一推, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+0 1 * * * jd_tyt.js, tag=推一推, enabled=true
 */
 
 const $ = new Env('极速版-推推赚大钱');//助力前三个可助力的账号
@@ -38,7 +38,7 @@ if ($.isNode()) {
                $.isLogin = true;
                $.nickName = '';
                message = '';
-               await TotalBean();
+               //await TotalBean();
                console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
                if (!$.isLogin) {
                     $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });

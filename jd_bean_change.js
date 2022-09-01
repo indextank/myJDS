@@ -6,7 +6,7 @@
  
 [task_local]
 #京东日资产变动通知
-20 9 * * * jd_bean_change.js, tag=京东日资产变动通知, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+20 9 * * * jd_bean_change.js, tag=京东日资产变动通知, enabled=true
  * */
 const $ = new Env("京东日资产变动");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";

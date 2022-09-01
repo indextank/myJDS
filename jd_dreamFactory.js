@@ -11,7 +11,7 @@
 ============Quantumultx===============
 [task_local]
 #京喜工厂
-10 0,6-23 * * * jd_dreamFactory.js, tag=京喜工厂, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+10 0,6-23 * * * jd_dreamFactory.js, tag=京喜工厂, enabled=true
 
 ================Loon==============
 [Script]

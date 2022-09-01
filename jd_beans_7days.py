@@ -3,7 +3,6 @@
 # Modify : 2022/5/13
 # 京豆近7天输出表格统计
 # 用不着每天跑,定时自行设置吧，配合desi可指定账号
-# https://raw.githubusercontent.com/6dylan6/jdpro/main/jd_beans_7days.py
 '''
 new Env('豆子7天统计');
 1 8 13 5 * jd_beans_7days.py
